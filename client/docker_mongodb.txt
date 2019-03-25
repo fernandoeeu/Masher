@@ -1,0 +1,17 @@
+Instalando docker (https://phoenixnap.com/kb/how-to-install-docker-on-ubuntu-18-04):
+1- Atualizar o sistema:
+sudo apt update
+
+2- Desinstalar versões antigas do docker:
+sudo apt-get remove docker docker-engine docker.io
+
+3- Instalar docker
+sudo apt install docker.io
+
+4- Iniciar e automatizar docker
+sudo systemctl start docker
+sudo systemctl enable docker // iniciar em todo startup
+
+DOCKER + MONGO:
+
+
