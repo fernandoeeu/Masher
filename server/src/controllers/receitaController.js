@@ -25,7 +25,7 @@ router.get('/receitas', async (req, res) => {
           "ovos"
         ]
       }
-    }).sort({ id: 1 })
+    }).limit(20).sort({ id: 1 })
 
     return res.json(receitas)
   } catch (err) {

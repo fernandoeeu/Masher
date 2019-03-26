@@ -1,54 +1,32 @@
 import React, { Component } from 'react';
-import axios from 'axios'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
 import Home from './components/Home.js'
-axios.defaults.host = "localhost:3002"
+import ShowReceita from './components/receitas/ShowReceita'
+import Error from './components/Error';
+
+// Coloca a rota de receitas aqui no BrowserRouter
+// eala ja nao está? nao estou entendendo essa parte
+// Ahhh, entendi
+// Ela ta sendo carregada pela página home né?  tipo isso
+// https://stackoverflow.com/questions/52064303/reactjs-pass-props-with-redirect-component
+// Faz o seguinte então, saca
+//  vou ver, hmm, nao deu ele dá o console mas n redireciona
+// Mudei algumas coisas, e provavelmente vai funcionar
 
 class App extends Component {
-  state = {
-    receitas: null
-  }
-  fetchTodas = () => {
-    axios.get('/api/receitas/all')
-      .then(res => {
-        this.setState({
-          receitas: [res.data]
-        })
-      })
-      .catch(err => {
-        console.log(err)
-      })
-  }
-  fetchFiltrado = () => {
-    axios.get('/api/receitas')
-      .then(res => {
-        this.setState({
-          receitas: [res.data]
-        })
-      })
-      .catch(err => {
-        console.log(err)
-      })
-  }
-
-  clear = () => {
-    this.setState({ receitas: null })
-  }
-
-
   render() {
     return (
-      <div className="container">
-        <div className="row">
-          <button onClick={this.fetchTodas} className="btn btn-default">TODAS</button>
-          <button onClick={this.fetchFiltrado} className="btn btn-default">FILTRADO</button>
-          <button onClick={this.clear} className="btn btn-default">LIMPAR</button>
-          {this.state.receitas ? <h4>{this.state.receitas[0].length} receitas foram encontradas</h4> : null}
-        </div>
-        <Home receitas={this.state.receitas} />
-      </div>
+      <BrowserRouter>
+        <Switch>
+          <Route path="/" component={Home} exact />
+          <Route path="/show-receita" component={ShowReceita} />
+          <Route component={Error} />
+        </Switch>
+      </BrowserRouter>
     );
   }
 }
 
 export default App;
+// Here I am
