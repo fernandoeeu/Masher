@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 
-import Navbar from './navbar/Navbar'
 import Receitas from './receitas/Receitas'
 
 import './Home.css'
@@ -42,7 +41,6 @@ class Home extends Component {
 
     return (
       <>
-        <Navbar />
         <div className="container">
           <div className="row">
             <button onClick={this.fetchTodas} className="btn btn-default">TODAS</button>

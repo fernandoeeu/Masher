@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
 import Home from './components/Home.js'
+import Navbar from './components/navbar/Navbar'
 import ShowReceita from './components/receitas/ShowReceita'
+import Signin from './components/auth/Signin'
+import Signup from './components/auth/Signup'
 import Error from './components/Error';
 
 // Coloca a rota de receitas aqui no BrowserRouter
@@ -21,8 +24,11 @@ class App extends Component {
         <Switch>
           <Route path="/" component={Home} exact />
           <Route path="/show-receita" component={ShowReceita} />
+          <Route path="/signin" component={Signin} />
+          <Route path="/signup" component={Signup} />
           <Route component={Error} />
         </Switch>
+        <Navbar />
       </BrowserRouter>
     );
   }
