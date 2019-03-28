@@ -18,7 +18,7 @@ router.post("/register", async (req, res) => {
     let errors = [];
 
     // checando os campos obrigatórios
-    if (!nome || !email || !senha) {
+    if (!nome || !email || !senha || !senha2) {
       errors.push({ msg: "Por favor preencha todos os campos" });
     }
     // Checando se as senhas coincidem
