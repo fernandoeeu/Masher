@@ -27,20 +27,30 @@ app.use((req, res, next) => {
   next();
 });
 
-require("./controllers/receitaController")(app);
-require("./controllers/authController")(app);
+require("./server/src/controllers/receitaController")(app);
+require("./server/src/controllers/authController")(app);
 
-// serve static assets
-if (process.env.NODE_ENV === "production") {
-  // set static folder
-  app.use(express.static("../../client/build"));
-  app.get("*", (req, res) => {
-    res.sendFile(
-      path.resolve(__dirname, "../../client", "build", "index.html")
-    );
-  });
-}
+
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT);
+//Static file declaration
+app.use(express.static(path.join(__dirname, 'client/build')));
+
+//production mode
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, 'client/build')));
+  //
+  app.get('*', (req, res) => {
+    res.sendfile(path.join(__dirname = 'client/build/index.html'));
+  })
+}
+//build mode
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname + '/client/public/index.html'));
+})
+
+
+app.listen(PORT, (req, res) => {
+  console.log(`Server listening on port: ${PORT}`)
+});

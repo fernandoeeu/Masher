@@ -4,13 +4,23 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build",
-    "start": "node server/src/server.js"
+    "client-install": "npm install --prefix client",
+    "start": "node index.js",
+    "server": "nodemon index.js",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/fernandoeeu/projeto-integrador.git"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "concurrently": "^4.1.0",
+    "connect-flash": "^0.1.1",
+    "express": "^4.16.4",
+    "express-session": "^1.15.6"
   },
   "keywords": [],
   "author": "",
