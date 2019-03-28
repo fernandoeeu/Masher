@@ -29,4 +29,6 @@ app.use((req, res, next) => {
 require("./controllers/receitaController")(app);
 require("./controllers/authController")(app);
 
-app.listen(3002);
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT);
