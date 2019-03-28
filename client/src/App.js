@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import Home from './components/Home.js'
 import Navbar from './components/navbar/Navbar'
 import ShowReceita from './components/receitas/ShowReceita'
+import CriarReceita from './components/receitas/CriarReceita'
 import Signin from './components/auth/Signin'
 import Signup from './components/auth/Signup'
 import Error from './components/Error';
@@ -26,6 +27,7 @@ class App extends Component {
           <Route path="/show-receita" component={ShowReceita} />
           <Route path="/signin" component={Signin} />
           <Route path="/signup" component={Signup} />
+          <Route path="/receita/criar" component={CriarReceita} />
           <Route component={Error} />
         </Switch>
         <Navbar />

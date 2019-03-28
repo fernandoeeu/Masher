@@ -1,17 +1,47 @@
 import React, { Component } from "react";
+import axios from "axios";
 import { NavLink } from "react-router-dom";
 
 import Mensagem from "../messages/Mensagem";
 
 class Signin extends Component {
   state = {
-    status: null
+    status: null,
+    email: "",
+    senha: ""
   };
   componentDidMount() {
     if (this.props.location.state) {
       this.setState({ status: this.props.location.state.status });
     }
   }
+  onChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
+  onSubmit = e => {
+    e.preventDefault();
+    const { email, senha } = this.state;
+    axios
+      .post("/api/signin", {
+        email,
+        senha,
+      })
+      .then(res => {
+        if (res.data.erros) {
+          this.setState({ erros: null });
+          console.log(res.data.erros);
+          this.setState({ erros: res.data.erros });
+        } else {
+          console.log(res);
+          this.setState({ erros: null });
+          return this.props.history.push({
+            pathname: "/",
+            state: { status: 200 },
+            from: this.props.location
+          });
+        }
+      });
+  };
   render() {
     const { status } = this.state;
     //console.log(this.state.status);
@@ -19,7 +49,7 @@ class Signin extends Component {
       <div className="container">
         <div className="row">
           <div className="col-md-4 offset-md-4">
-            <form>
+            <form onSubmit={e => this.onSubmit(e)}>
               <h4 className="my-3">Entrar</h4>
               {status === 200 ? (
                 <Mensagem
@@ -29,6 +59,8 @@ class Signin extends Component {
               ) : null}
               <div className="form-group">
                 <input
+                  onChange={e => this.onChange(e)}
+                  name="email"
                   type="email"
                   className="form-control"
                   placeholder="Email"
@@ -36,6 +68,8 @@ class Signin extends Component {
               </div>
               <div className="form-group">
                 <input
+                  onChange={e => this.onChange(e)}
+                  name="senha"
                   type="password"
                   className="form-control"
                   placeholder="Senha"

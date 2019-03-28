@@ -3,9 +3,14 @@ const bodyParser = require("body-parser");
 const flash = require("connect-flash");
 const session = require("express-session");
 const path = require("path");
+const passport = require('passport')
 // const cors = require('cors')
 
 const app = express();
+
+// passport config
+require('./config/passport')(passport)
+
 // app.use(cors())
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -17,6 +22,11 @@ app.use(
     saveUninitialized: true
   })
 );
+// Passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
+
 // Connect Flash Middleware
 app.use(flash());
 

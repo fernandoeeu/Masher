@@ -1,5 +1,7 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
+const jwt = require('jsonwebtoken')
+const auth = require('../middleware/auth')
 
 const User = require("../models/User");
 
@@ -7,10 +9,67 @@ const router = express.Router();
 
 router.post("/signin", async (req, res) => {
   try {
+    const { email, senha } = req.body;
+    let errors = [];
+
+    // checando os campos obrigatórios
+    if (!email || !senha) {
+      errors.push({ msg: "Por favor preencha todos os campos" });
+    }
+    // Verificando se há erros no array de erros
+    if (errors.length > 0) {
+      console.log(errors);
+      // Enviando os erros para o cliente
+      res.send({ erros: errors });
+    } else {
+      // Validação OK!
+      // Verificando se há um usuário com o email fornecido para cadastro
+      User.findOne({ email: email })
+        .then(user => {
+          if (!user) {
+            // Enviando o erro relacionado ao email em uso
+            errors.push({ msg: "Email não cadastrado" });
+            res.send({ erros: errors });
+          } else {
+            bcrypt.compare(senha, user.senha)
+              .then(isMatch => {
+                if (!isMatch) {
+                  errors.push({ msg: "Senha inválida" })
+                  res.json({ erros: errors })
+                } else {
+                  jwt.sign(
+                    { id: user.id },
+                    'secret',
+                    (err, token) => {
+                      if (err) console.log(err)
+                      res.send({
+                        token, user: {
+                          id: user.id,
+                          nome: user.nome,
+                          email: user.email
+                        }
+                      })
+
+                    }
+                  )
+                  //res.json({ msg: "autenticado", id: user.id })
+                }
+              })
+
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
+
+    }
   } catch (err) {
+    console.log(err);
     return res.status(400).send({ error: "Query failed..." });
   }
 });
+
+///////
 
 router.post("/register", async (req, res) => {
   try {
@@ -64,7 +123,15 @@ router.post("/register", async (req, res) => {
                 flash = {
                   success: req.flash("success_msg", "Você foi cadastrado")
                 };
-                res.send({ msg: 200, user: newUser, flash });
+                jwt.sign(
+                  { id: user.id },
+                  'secret',
+                  (err, token) => {
+                    if (err) throw err
+                    res.send({ msg: 200, user: newUser, token, id: user.id });
+
+                  }
+                )
               })
               .catch(err => console.log(err));
           });
@@ -76,5 +143,12 @@ router.post("/register", async (req, res) => {
     return res.status(400).send({ error: "Query failed..." });
   }
 });
+
+// @route GET api/auth/user
+router.get('/auth/user', auth, async (req, res) => {
+  const user = await User.findById(req.user.id).select('-senha')
+  if (user) res.json(user)
+
+})
 
 module.exports = app => app.use("/api", router);
