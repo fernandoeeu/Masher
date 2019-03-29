@@ -1,23 +1,13 @@
-import { createStore } from "redux";
+import { createStore, applyMiddleware, compose } from "redux";
+import thunk from 'redux-thunk'
 
-const INITIAL_STATE = {
-  pessoaAtiva: {},
-  pessoas: [
-    { id: 1, nome: "Fernando" },
-    { id: 2, nome: "Anna" },
-    { id: 3, nome: "Matheus" }
-  ]
-};
+import rootReducer from './reducers'
 
-function reducer(state = INITIAL_STATE, action) {
-  switch (action.type) {
-    case "TOGGLE_PESSOA":
-      return { ...state, pessoaAtiva: action.pessoa };
-    default:
-      return state;
-  }
-}
+const middleware = [thunk];
 
-const store = createStore(reducer);
+const store = createStore(rootReducer, compose(
+  applyMiddleware(...middleware),
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+));
 
 export default store;

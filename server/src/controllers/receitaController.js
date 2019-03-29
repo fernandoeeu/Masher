@@ -2,13 +2,11 @@ const express = require("express");
 
 const Receita = require("../models/Receita");
 
-<<<<<<< Updated upstream
+
 const auth = require('../middleware/auth')
 
 const router = express.Router()
-=======
-const router = express.Router();
->>>>>>> Stashed changes
+
 
 /*
   
@@ -49,11 +47,10 @@ router.get("/receitas/all", async (req, res) => {
   }
 });
 
-<<<<<<< Updated upstream
+
 router.get('/busca/receita/:id', async (req, res) => {
-=======
-router.get("/receita/:id", async (req, res) => {
->>>>>>> Stashed changes
+
+
   try {
     const receita = await Receita.findById(req.params.id);
 
@@ -63,7 +60,7 @@ router.get("/receita/:id", async (req, res) => {
   }
 });
 
-<<<<<<< Updated upstream
+
 router.get('/receita/criar', auth, async (req, res) => {
   try {
     const x = 100
@@ -74,6 +71,4 @@ router.get('/receita/criar', auth, async (req, res) => {
 })
 
 module.exports = app => app.use('/api', router)
-=======
-module.exports = app => app.use("/api", router);
->>>>>>> Stashed changes
+

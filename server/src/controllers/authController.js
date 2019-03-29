@@ -1,16 +1,16 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
-<<<<<<< Updated upstream
+
 const jwt = require('jsonwebtoken')
 const auth = require('../middleware/auth')
 
-=======
->>>>>>> Stashed changes
+
+
 const User = require("../models/User");
 
 const router = express.Router();
 
-/* 
+/*
   @public
   /api/signin
 */
@@ -76,15 +76,15 @@ router.post("/signin", async (req, res) => {
   }
 });
 
-<<<<<<< Updated upstream
+
 ///////
 
-=======
+
 /*
   @public
   /api/register
 */
->>>>>>> Stashed changes
+
 router.post("/register", async (req, res) => {
   try {
     const { nome, email, senha, senha2 } = req.body;
