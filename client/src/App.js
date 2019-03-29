@@ -9,6 +9,8 @@ import Signin from './components/auth/Signin'
 import Signup from './components/auth/Signup'
 import Error from './components/Error';
 
+import { provider } from 'react-redux'
+
 // Coloca a rota de receitas aqui no BrowserRouter
 // eala ja nao está? nao estou entendendo essa parte
 // Ahhh, entendi
