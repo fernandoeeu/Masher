@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import * as UserActions from '../../store/actions/user'
 import axios from "axios";
 import { NavLink } from "react-router-dom";
 
@@ -19,6 +22,7 @@ class Signin extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
   onSubmit = e => {
+    const { fetchUser } = this.props
     e.preventDefault();
     const { email, senha } = this.state;
     axios
@@ -33,6 +37,9 @@ class Signin extends Component {
           this.setState({ erros: res.data.erros });
         } else {
           console.log(res);
+          localStorage.setItem('token', res.data.token)
+          localStorage.setItem('user', JSON.stringify(res.data.user))
+
           this.setState({ erros: null });
           return this.props.history.push({
             pathname: "/",
@@ -92,4 +99,10 @@ class Signin extends Component {
   }
 }
 
-export default Signin;
+const mapStateToProps = state => ({
+  user: state.user.user
+})
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(Object.assign({}, UserActions), dispatch)
+
+export default connect(mapStateToProps, mapDispatchToProps)(Signin);

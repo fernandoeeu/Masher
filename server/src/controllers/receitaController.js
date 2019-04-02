@@ -64,7 +64,7 @@ router.get('/busca/receita/:id', async (req, res) => {
 router.get('/receita/criar', auth, async (req, res) => {
   try {
     const x = 100
-    return res.json({ x })
+    return res.json({ body: req.body })
   } catch (err) {
     return res.status(401).send({ error: 'Não autorizado' })
   }

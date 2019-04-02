@@ -1,9 +1,10 @@
-import React, { Component } from "react";
+import React, { Component, useEffect } from "react";
 import axios from "axios";
 import { connect } from "react-redux";
 import { bindActionCreators } from 'redux'
 import * as CursoActions from '../store/actions/curso'
 import * as ReceitaActions from '../store/actions/receita'
+import * as UserActions from '../store/actions/user'
 
 import Receitas from "./receitas/Receitas";
 
@@ -11,8 +12,22 @@ import "./Home.css";
 
 class Home extends Component {
   state = {
-    receitas: null
+    receitas: null,
+    user: null
   };
+  componentDidMount() {
+    if (JSON.parse(localStorage.getItem('user'))) {
+      const usuario = JSON.parse(localStorage.getItem('user'))
+      this.setState({ user: usuario })
+      this.props.setUser(usuario)
+    }
+
+  }
+
+  // useEffect(() => {
+  //   checkIfSignedIn()
+  // }, [])
+
   fetchTodas = () => {
     axios
       .get("/api/receitas/all")
@@ -37,9 +52,10 @@ class Home extends Component {
 
   render() {
     const { pessoas, togglePessoa, pessoaAtiva, fetchReceitasFiltradas, receitas } = this.props;
-    console.log(pessoaAtiva);
+    console.log(this.state.user)
     return (
       <>
+        {this.state.user ? <h1>Bem-vindo(a), {this.state.user.nome}</h1> : null}
         <div className="container">
           <div className="row">
             <button onClick={this.fetchTodas} className="btn btn-default">
@@ -75,7 +91,7 @@ class Home extends Component {
             return (
               <div key={pessoa.id}>
                 <h4>{pessoa.nome}</h4>
-                <button onClick={() => togglePessoa(pessoa)}>
+                <button className="btn btn-default" onClick={() => togglePessoa(pessoa)}>
                   Toggle Pessoa
                 </button>
               </div>
@@ -91,9 +107,10 @@ class Home extends Component {
 const mapStateToProps = state => ({
   pessoas: state.curso.pessoas,
   pessoaAtiva: state.curso.pessoaAtiva,
-  receitas: state.receita.receitas.data
+  receitas: state.receita.receitas.data,
+  user: state.user.user
 })
 const mapDispatchToProps = dispatch =>
-  bindActionCreators(Object.assign({}, CursoActions, ReceitaActions), dispatch)
+  bindActionCreators(Object.assign({}, CursoActions, ReceitaActions, UserActions), dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

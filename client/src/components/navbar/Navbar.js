@@ -1,8 +1,14 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 
-export default class Navbar extends Component {
+class Navbar extends Component {
+  componentDidMount() {
+
+  }
   render() {
+    const { user } = this.props.user
+    console.log('a', user)
     return (
       <div>
 
@@ -15,10 +21,15 @@ export default class Navbar extends Component {
           </button>
           <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div className="navbar-nav">
-              <NavLink to="/" className="nav-item nav-link active">Home <span className="sr-only">(current)</span></NavLink>
-              <NavLink to="/signin" className="nav-item nav-link">Sign in</NavLink>
-              <NavLink to="" className="nav-item nav-link" href="#">Pricing</NavLink>
-              <NavLink to="" className="nav-item nav-link disabled" href="#">Disabled</NavLink>
+
+              {user ? (
+                <>
+                  <span>Olá, {user.nome}</span>
+                  <NavLink to="/receita/criar" className="nav-item nav-link" href="#">Criar receita</NavLink>
+                  <NavLink to="/perfil" className="nav-item nav-link active">Perfil</NavLink>
+                  <NavLink to="/signout" className="nav-item nav-link">Sair</NavLink>
+                </>
+              ) : <NavLink to="/signin" className="nav-item nav-link">Sign in</NavLink>}
             </div>
           </div>
         </nav>
@@ -26,4 +37,12 @@ export default class Navbar extends Component {
     )
   }
 }
+
+const mapStateToProps = state => ({
+  user: state.user
+})
+
+// const mapDispatchToProps = dispatch
+
+export default connect(mapStateToProps)(Navbar)
 
