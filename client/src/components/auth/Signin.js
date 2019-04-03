@@ -35,7 +35,6 @@ class Signin extends Component {
           console.log(res.data.erros);
           this.setState({ erros: res.data.erros });
         } else {
-          console.log(res.data);
           localStorage.setItem("token", res.data.token);
           localStorage.setItem("user", JSON.stringify(res.data.user));
 

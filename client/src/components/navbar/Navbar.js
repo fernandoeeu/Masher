@@ -3,7 +3,12 @@ import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
 
 class Navbar extends Component {
-  componentDidMount() {}
+  state = {
+    user: null
+  }
+  componentDidMount() {
+    localStorage.getItem('user') ? this.setState({ user: JSON.parse(localStorage.getItem('user')) }) : this.setState({ user: null })
+  }
   onClearLocalStorage = () => {
     localStorage.clear();
     return this.props.history.push({
@@ -13,8 +18,7 @@ class Navbar extends Component {
     });
   };
   render() {
-    const { user } = this.props.user;
-    console.log("a", user);
+    const { user } = this.state
     return (
       <div>
         <nav className="navbar fixed-bottom navbar-light bg-light">
@@ -56,10 +60,10 @@ class Navbar extends Component {
                   </NavLink>
                 </>
               ) : (
-                <NavLink to="/signin" className="nav-item nav-link">
-                  Sign in
+                  <NavLink to="/signin" className="nav-item nav-link">
+                    Sign in
                 </NavLink>
-              )}
+                )}
             </div>
           </div>
         </nav>
@@ -69,7 +73,7 @@ class Navbar extends Component {
 }
 
 const mapStateToProps = state => ({
-  user: state.user
+  user: state.user.user
 });
 
 // const mapDispatchToProps = dispatch

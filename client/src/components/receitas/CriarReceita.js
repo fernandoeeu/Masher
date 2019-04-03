@@ -11,9 +11,6 @@ class CriarReceita extends Component {
     categorias: [],
     receita: {}
   };
-  componentDidMount() {
-    console.log(localStorage.getItem("token"));
-  }
 
   onHandleSubmit = e => {
     const { titulo, ingredientes, categorias } = this.state;
@@ -23,44 +20,30 @@ class CriarReceita extends Component {
     const newReceita = {
       titulo,
       ingredientes: ingArr,
-      categorias: catArr
+      categorias: catArr,
+      user: JSON.parse(localStorage.getItem('user'))
     };
     this.setState({
       receita: newReceita
     });
-    const token = localStorage.getItem("token");
-
-    const headers = {
-      "x-auth-token": localStorage.getItem("token")
-    };
-
-    const uri = "api/receitas/criar";
-
     axios
       .post("/api/receitas/criar", newReceita, {
         headers: {
           "x-auth-token": localStorage.getItem("token")
         }
       })
-      .then(res => console.log("res", res))
+      .then(res => {
+        if (res.status === 200) {
+          return this.props.history.push({
+            pathname: "/",
+            data: {
+              msg: "Receita adicionada com sucesso"
+            },
+            from: this.props.location
+          })
+        }
+      })
       .catch(err => console.log("erro", err));
-
-    // axios
-    //   .post(uri, headers, newReceita)
-    // .then(res => console.log("asdasd", res))
-    // .catch(err => console.log("erro", err));
-    // .post("receitas/criar", {
-    //   token,
-    //   newReceita
-    // })
-    // .then(res => console.log("Res: " + res.body))
-    // .catch(err => "err" + err);
-    // .post("/api/receitas/criar", {
-    //   headers: {
-    //     "x-auth-token": localStorage.getItem("token")
-    //   }
-    // })
-    //console.log(newReceita)
   };
   onInputChange = e => {
     this.setState({ [e.target.name]: e.target.value });

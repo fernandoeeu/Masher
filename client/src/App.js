@@ -13,8 +13,10 @@ import Home from "./components/Home.js";
 import Navbar from "./components/navbar/Navbar";
 import ShowReceita from "./components/receitas/ShowReceita";
 import CriarReceita from "./components/receitas/CriarReceita";
+import UserProfile from './components/user/UserProfile'
 import Signin from "./components/auth/Signin";
 import Signup from "./components/auth/Signup";
+import ProtecedRoute from './components/auth/ProtectedRoute'
 import Error from "./components/Error";
 
 import { Provider } from "react-redux";
@@ -31,7 +33,8 @@ class App extends Component {
             <Route path="/show-receita" component={ShowReceita} />
             <Route path="/signin" component={Signin} />
             <Route path="/signup" component={Signup} />
-            <Route path="/receita/criar" component={CriarReceita} />
+            <ProtecedRoute path="/receita/criar" component={CriarReceita} />
+            <ProtecedRoute path="/perfil" component={UserProfile} />
             <Route component={Error} />
           </Switch>
           <Navbar />

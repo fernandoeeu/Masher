@@ -55,16 +55,28 @@ router.get("/busca/receita/:id", async (req, res) => {
   }
 });
 
-router.post("/receitas/criar", auth, (req, res) => {
+router.post("/receitas/criar", auth, async (req, res) => {
   let { titulo, categorias, ingredientes } = req.body;
   categorias = categorias.map(categoria => categoria.trim());
   ingredientes = ingredientes.map(ingrediente => ingrediente.trim());
-  const receita = {
-    titulo,
-    categorias,
-    ingredientes
-  };
-  res.send({ data: receita });
+  // const receita = {
+  //   titulo,
+  //   categorias,
+  //   ingredientes
+  // };
+  let receita = new Receita()
+  receita.nome = titulo
+  receita.ing = ingredientes
+  receita.cat = categorias
+  receita.createdBy = req.body.user.id
+  receita.save(function (err) {
+    if (err) {
+      return console.log("err", err)
+    } else {
+      res.send({ msg: 'ok' })
+    }
+  })
+  //res.send({ data: req.body.user.id });
   // return console.log(req.body);
   //let receita = res.json({ body: req.body })
 });

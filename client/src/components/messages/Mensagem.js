@@ -7,6 +7,9 @@ const Mensagem = props => {
     case "erro":
       classe = "alert alert-warning";
       break;
+    case "erro-login":
+      classe = "alert alert-warning alert-dismissible fade show";
+      break;
     case "sucesso":
       classe = "alert alert-success alert-dismissible fade show";
       break;
@@ -16,7 +19,7 @@ const Mensagem = props => {
   return (
     <div className={classe} role="alert">
       {msg}
-      {type === "sucesso" ? (
+      {type === "sucesso" || type === "erro-login" ? (
         <button
           type="button"
           className="close"
