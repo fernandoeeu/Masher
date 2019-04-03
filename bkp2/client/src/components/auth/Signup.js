@@ -1,33 +1,31 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import * as UserActions from "../../store/actions/user";
 import axios from "axios";
 import { NavLink } from "react-router-dom";
 
 import Mensagem from "../messages/Mensagem";
 
-class Signin extends Component {
+export default class Signup extends Component {
   state = {
-    status: null,
+    nome: "",
     email: "",
-    senha: ""
+    senha: "",
+    senha2: "",
+    erros: null,
+    redirect: false
   };
-  componentDidMount() {
-    if (this.props.location.state) {
-      this.setState({ status: this.props.location.state.status });
-    }
-  }
+
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
   onSubmit = e => {
     e.preventDefault();
-    const { email, senha } = this.state;
+    const { nome, email, senha, senha2 } = this.state;
     axios
-      .post("/api/signin", {
+      .post("/api/register", {
+        nome,
         email,
-        senha
+        senha,
+        senha2
       })
       .then(res => {
         if (res.data.erros) {
@@ -35,59 +33,75 @@ class Signin extends Component {
           console.log(res.data.erros);
           this.setState({ erros: res.data.erros });
         } else {
-          console.log(res.data);
-          localStorage.setItem("token", res.data.token);
-          localStorage.setItem("user", JSON.stringify(res.data.user));
-
+          console.log(res);
           this.setState({ erros: null });
           return this.props.history.push({
-            pathname: "/",
+            pathname: "/signin",
             state: { status: 200 },
             from: this.props.location
           });
         }
       });
   };
+
   render() {
-    const { status } = this.state;
-    //console.log(this.state.status);
+    const { erros } = this.state;
     return (
       <div className="container">
         <div className="row">
           <div className="col-md-4 offset-md-4">
             <form onSubmit={e => this.onSubmit(e)}>
-              <h4 className="my-3">Entrar</h4>
-              {status === 200 ? (
-                <Mensagem
-                  msg="Você foi cadastrado com sucesso!"
-                  type="sucesso"
-                />
-              ) : null}
+              <h4 className="my-3">Cadastrar</h4>
+
+              {erros
+                ? erros.map(erro => (
+                    <Mensagem key={erro.msg} msg={erro.msg} type={"erro"} />
+                  ))
+                : null}
+
               <div className="form-group">
                 <input
                   onChange={e => this.onChange(e)}
-                  name="email"
+                  type="text"
+                  className="form-control"
+                  placeholder="Nome"
+                  name="nome"
+                />
+              </div>
+              <div className="form-group">
+                <input
+                  onChange={e => this.onChange(e)}
                   type="email"
                   className="form-control"
                   placeholder="Email"
+                  name="email"
                 />
               </div>
               <div className="form-group">
                 <input
                   onChange={e => this.onChange(e)}
-                  name="senha"
                   type="password"
                   className="form-control"
                   placeholder="Senha"
+                  name="senha"
                 />
               </div>
               <div className="form-group">
-                <button className="btn btn-primary btn-block">Sign in</button>
+                <input
+                  onChange={e => this.onChange(e)}
+                  type="password"
+                  className="form-control"
+                  placeholder="Confirme sua senha"
+                  name="senha2"
+                />
               </div>
-              <h4 className="mt-4 mb-3">Não é cadastrado?</h4>
               <div className="form-group">
-                <NavLink to="/signup" className="btn btn-danger btn-block">
-                  Sign up
+                <button className="btn btn-primary btn-block">Sign up</button>
+              </div>
+              <h4 className="mt-4 mb-3">Já é cadastrado?</h4>
+              <div className="form-group">
+                <NavLink to="/signin" className="btn btn-danger btn-block">
+                  Sign in
                 </NavLink>
               </div>
             </form>
@@ -97,14 +111,3 @@ class Signin extends Component {
     );
   }
 }
-
-const mapStateToProps = state => ({
-  user: state.user.user
-});
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(Object.assign({}, UserActions), dispatch);
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Signin);

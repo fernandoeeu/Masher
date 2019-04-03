@@ -1,0 +1,45 @@
+.scrolling-wrapper {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+  width: 100%;
+}
+.hz {
+  width: 250px;
+  height: 120px;
+  border: 1px solid black;
+  border-radius: 3px;
+  padding: 5px;
+}
+
+.hz, .card-receita {
+  display: inline-block;
+  margin: 5px;
+}
+/* .masher-container {
+  width: 100%;
+  position: -webkit-sticky;
+  position: sticky;
+  bottom: 0;
+} */
+
+.masher-container .btn-masher {
+  position: fixed;
+  bottom: 20;
+  height: 60px;
+  width: 60px;
+  right: 20;
+  margin: auto;
+  cursor: pointer;
+  border-radius: 50%;
+}
+.card-receita {
+  max-width: 12rem;
+}
+
+.card-text {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+
