@@ -1,8 +1,15 @@
 import React, { Component } from "react";
-
+import { NavLink, Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 class UserProfile extends Component {
+  // gotoUserReceitas = () => {
+  //   return this.props.history.push({
+  //     pathname: "/perfil/receitas",
+  //     state: { user: this.props.user },
+  //     from: this.props.location
+  //   });
+  // }
   render() {
     console.log(this.props)
     return (
@@ -13,7 +20,13 @@ class UserProfile extends Component {
             <div className="card">
               <div className="card-body">
                 <h5 className="card-title">Minhas Receitas</h5>
-                <a href="" className="btn btn-primary">Go somewhere</a>
+                <Link to={{
+                  pathname: 'perfil/receitas', props: {
+                    user: this.props.user
+                  }
+                }}>
+                  Receitas
+                </Link>
               </div>
             </div>
           </div>

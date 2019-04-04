@@ -55,6 +55,18 @@ router.get("/busca/receita/:id", async (req, res) => {
   }
 });
 
+router.post("/receitas/busca/:uid", async (req, res) => {
+  try {
+    const receitas = await Receita.find({ createdBy: req.params.uid })
+
+    return res.json(receitas)
+  } catch (err) {
+    return res.status(400).send({ error: "usuario não encontrado" })
+  }
+});
+
+
+
 router.post("/receitas/criar", auth, async (req, res) => {
   let { titulo, categorias, ingredientes } = req.body;
   categorias = categorias.map(categoria => categoria.trim());
