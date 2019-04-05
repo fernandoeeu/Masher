@@ -45,7 +45,7 @@ router.get("/receitas/all", async (req, res) => {
   }
 });
 
-router.get("/busca/receita/:id", async (req, res) => {
+router.get("/receitas/busca/:id", async (req, res) => {
   try {
     const receita = await Receita.findById(req.params.id);
 
@@ -65,7 +65,20 @@ router.post("/receitas/busca/:uid", async (req, res) => {
   }
 });
 
+router.post("/receitas/atualizar/:rid", (req, res) => {
+  try {
+    // const res = await req.body
+    return res.json(req.body)
+    // const receitaAtualizada = await Receita.updateOne(
+    //   { _id: req.body.rid},
+    //   {
 
+    //   }
+    // )
+  } catch (err) {
+    return res.status(400).send({ error: "receita não encontrado" })
+  }
+})
 
 router.post("/receitas/criar", auth, async (req, res) => {
   let { titulo, categorias, ingredientes } = req.body;

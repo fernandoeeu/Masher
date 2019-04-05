@@ -24,10 +24,6 @@ const UserReceitas = props => {
     fetchUserReceitas()
   }, [])
 
-  useEffect(() => {
-    console.log(userReceitas)
-  }, [userReceitas])
-
   return (
     <div className="container">
       <h2>{userReceitas.length}</h2>
