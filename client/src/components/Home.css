@@ -42,4 +42,20 @@
   word-wrap: break-word;
 }
 
+.ms-gray {
+  color: #768189;
+}
+
+.first-section {
+  box-shadow: 4px 6px 4px -4px #E3E8F1;
+
+}
+
+.wrapper-acoes-rapidas {
+  height: 90px;
+}
+
+.wrapper-acoes-rapidas div:first-child {
+  margin-left: 25px;
+}
 

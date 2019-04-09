@@ -1,0 +1,17 @@
+$color-gray: #E3E8F1;
+$color-blue: #1840DA;
+
+.acao-rapida {
+  border-radius: 18px;
+  width: 62px;
+  height: 62px;
+}
+
+.acao-rapida-blue {
+  background-color: $color-blue;
+  color: white;
+}
+
+.acao-rapida-gray {
+  background-color: $color-gray;
+}

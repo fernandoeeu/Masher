@@ -11,9 +11,9 @@ const router = express.Router();
 */
 router.post("/receitas", async (req, res) => {
   try {
-    const receita = await Receita.create(req.body);
+    //const receita = await Receita.create(req.body);
 
-    return res.send({ receita });
+    return res.send({ a: 'a' });
   } catch (err) {
     return res.status(400).send({ error: "Query failed..." });
   }
@@ -79,6 +79,7 @@ router.post("/receitas/atualizar/:rid", (req, res) => {
     return res.status(400).send({ error: "receita não encontrado" })
   }
 })
+
 
 router.post("/receitas/criar", auth, async (req, res) => {
   let { titulo, categorias, ingredientes } = req.body;

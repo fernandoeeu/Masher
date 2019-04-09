@@ -1,3 +1,23 @@
+// {/* <>
+//   <span>Olá, {user.nome}</span>
+//   <NavLink
+//     to="/receita/criar"
+//     className="nav-item nav-link"
+//     href="#"
+//   >
+//     Criar receita
+//     </NavLink>
+//   <NavLink to="/perfil" className="nav-item nav-link">
+//     Perfil
+//     </NavLink>
+//   <NavLink
+//     to="/"
+//     className="nav-item nav-link"
+//     onClick={() => onClearLocalStorage()}
+//   >
+//     Sair
+//     </NavLink>
+// </> */}
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
@@ -18,54 +38,11 @@ const Navbar = props => {
   };
 
   return (
-    <div>
-      <nav className="navbar fixed-bottom navbar-light bg-light">
-        <a className="navbar-brand" href="/">
-          Masher
-          </a>
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbarNavAltMarkup"
-          aria-controls="navbarNavAltMarkup"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon" />
-        </button>
-        <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
-          <div className="navbar-nav">
-            {user ? (
-              <>
-                <span>Olá, {user.nome}</span>
-                <NavLink
-                  to="/receita/criar"
-                  className="nav-item nav-link"
-                  href="#"
-                >
-                  Criar receita
-                  </NavLink>
-                <NavLink to="/perfil" className="nav-item nav-link">
-                  Perfil
-                  </NavLink>
-                <NavLink
-                  to="/"
-                  className="nav-item nav-link"
-                  onClick={() => onClearLocalStorage()}
-                >
-                  Sair
-                  </NavLink>
-              </>
-            ) : (
-                <NavLink to="/signin" className="nav-item nav-link">
-                  Sign in
-                </NavLink>
-              )}
-          </div>
-        </div>
-      </nav>
-    </div>
+    <nav className="navbar navbar-light fixed-bottom d-flex justify-content-between border-top">
+      <button className="btn btn-default ml-4">Home</button>
+      <span>MASHER</span>
+      <button className="btn btn-default mr-4">{user ? 'Perfil' : 'Entrar'}</button>
+    </nav>
   );
 }
 

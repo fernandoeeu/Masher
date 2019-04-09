@@ -39,6 +39,7 @@ app.use((req, res, next) => {
 
 require("./server/src/controllers/receitaController")(app);
 require("./server/src/controllers/authController")(app);
+require('./server/src/controllers/categoriasController')(app)
 
 
 
