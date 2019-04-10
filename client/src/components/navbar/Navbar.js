@@ -22,6 +22,8 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
 
+import './navbar.scss'
+
 const Navbar = props => {
 
   const [user, setUser] = useState({})
@@ -38,7 +40,7 @@ const Navbar = props => {
   };
 
   return (
-    <nav className="navbar navbar-light fixed-bottom d-flex justify-content-between border-top">
+    <nav className="navbar bottom-nav navbar-light fixed-bottom d-flex justify-content-between border-top">
       <button className="btn btn-default ml-4">Home</button>
       <span>MASHER</span>
       <button className="btn btn-default mr-4">{user ? 'Perfil' : 'Entrar'}</button>

@@ -16,6 +16,18 @@ router.get("/categorias", async (req, res) => {
       {
         id: 2,
         nome: "Sobremesas",
+      },
+      {
+        id: 3,
+        nome: "Bolos",
+      },
+      {
+        id: 4,
+        nome: "Churrasco",
+      },
+      {
+        id: 5,
+        nome: "Bebidas",
       }
     ]
 

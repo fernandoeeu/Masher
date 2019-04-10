@@ -1,3 +1,29 @@
-.card-largo {
-  min-width: 200px;
+.my-card {
+  min-width: 130px;
+  height: 158px;
+  border-radius: 10px;
+}
+
+.my-card-img  {
+  height: 62%;
+  background-image: url("https://receitatodahora.com.br/wp-content/uploads/2018/07/bolo-de-cenoura-sem-farinha-de-trigo.jpg");
+  background-size: cover;
+  background-repeat:   no-repeat;
+  background-position: center center;    
+}
+
+.my-card-body {
+  height: 38%;
+  background-color: #E3E8F1;
+  word-wrap: break-word;
+}
+
+.my-card-title {
+  width: 100%;
+  font-size: 13px;
+  top: -5px;
+  margin-left: 8px;
+  font-weight: bold;
+  color: #424242;
+  word-wrap: break-word;
 }

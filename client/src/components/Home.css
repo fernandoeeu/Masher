@@ -1,3 +1,7 @@
+* {
+  /* max-height: 90%; */
+}
+
 .scrolling-wrapper {
   overflow-x: scroll;
   overflow-y: hidden;
@@ -46,7 +50,7 @@
   color: #768189;
 }
 
-.first-section {
+.first-section, .third-section {
   box-shadow: 4px 6px 4px -4px #E3E8F1;
 
 }
@@ -56,6 +60,14 @@
 }
 
 .wrapper-acoes-rapidas div:first-child {
-  margin-left: 25px;
+  margin-left: 15px;
+}
+
+.wrapper-categorias div:first-child {
+  margin-left: 2px;
+}
+
+.fourth-section {
+  margin-bottom: 50px;
 }
 

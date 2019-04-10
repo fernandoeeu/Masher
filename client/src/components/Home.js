@@ -24,6 +24,7 @@ import * as UserActions from "../store/actions/user";
 import Receitas from "./receitas/Receitas";
 import Msg from '../components/messages/Mensagem'
 import UserAcaoRapida from '../components/user/UserAcaoRapida'
+import Categoria from '../components/categorias/Categoria'
 
 import "./Home.css";
 
@@ -55,6 +56,7 @@ class Home extends Component {
       this.setState({ error: null })
     }
     this.fetchCategorias()
+    this.fetchTodas()
   }
 
   fetchCategorias = async () => {
@@ -76,8 +78,9 @@ class Home extends Component {
       .get("/api/receitas/all")
       .then(res => {
         this.setState({
-          receitas: [res.data]
+          receitas: res.data
         });
+        console.log(this.state.receitas)
       })
       .catch(err => {
         console.log(err);
@@ -110,11 +113,6 @@ class Home extends Component {
           {error ? <Msg type="erro-login" msg={error} /> : null}
           <div className="row first-section"> {/* Begin first row */}
             <h5 className="ml-3 ms-gray">AÇÕES RÁPIDAS</h5>
-            {this.state.receitas ? (
-              <h4>
-                {this.state.receitas[0].length} receitas foram encontradas
-              </h4>
-            ) : null}
             <div className="scrolling-wrapper wrapper-acoes-rapidas">
               <div className="d-flex flex-row">
                 <UserAcaoRapida isAdd={true} />
@@ -129,10 +127,28 @@ class Home extends Component {
             <h5 className="ml-3 mt-3 ms-gray"> CATEGORIAS</h5>
             <div className="scrolling-wrapper wrapper-categorias">
               <div className="d-flex flex-row">
-                {this.state.categorias ? this.state.categorias.map(categoria => <h3 className="mx-2">{categoria.nome}</h3>) : null}
+                {this.state.categorias ? this.state.categorias.map(categoria => <Categoria nome={categoria.nome} />) : null}
               </div>
             </div>
           </div> {/* End second row */}
+
+          <div className="row third-section"> {/* Begin third row */}
+            <h5 className="ml-3 mt-3 ms-gray"> HISTÓRICO</h5>
+            <div className="scrolling-wrapper wrapper-categorias">
+              <div className="d-flex flex-row">
+                {this.state.categorias ? this.state.categorias.map(categoria => <Categoria nome={categoria.nome} />) : null}
+              </div>
+            </div>
+          </div> {/* End third row */}
+
+          <div className="row fourth-section"> {/* Begin fourth row */}
+            <h5 className="ml-3 mt-3 ms-gray"> EM DESTAQUE</h5>
+            <div className="scrolling-wrapper wrapper-categorias">
+              <div className="d-flex flex-row">
+                {this.state.receitas ? this.state.receitas.map(receita => <Receitas receita={receita} />) : null}
+              </div>
+            </div>
+          </div> {/* End fourth row */}
 
         </div>
       </>
