@@ -5,6 +5,8 @@ import axios from 'axios';
 
 import Receitas from "../receitas/Receitas";
 
+import './userReceitas.scss'
+
 const UserReceitas = props => {
   //const { receitas, user } = props
 
@@ -12,7 +14,7 @@ const UserReceitas = props => {
   const [userReceitas, setUserReceitas] = useState([])
 
   const fetchUserReceitas = () => {
-    axios.post('/api/receitas/busca/5ca4bd972738aa688c1fbd8b')
+    axios.post(`/api/receitas/busca/${user.id}`)
       .then(res => {
         setUserReceitas(res.data)
       })
@@ -27,10 +29,16 @@ const UserReceitas = props => {
   return (
     <div className="container">
       <h2>{userReceitas.length}</h2>
-      {/* <div className="row"> */}
+      <div className="row">
+        {userReceitas
+          ? userReceitas.map(receita => <div className="receita"> <Receitas receita={receita} /></div>)
+          : null
+        }
+      </div>
 
-      {userReceitas.map(receita => <Receitas key={receita._id} id={receita._id} nome={receita.nome} ing={receita.ing} />)}
-      {/* </div> */}
+
+
+
     </div>
 
   )

@@ -1,6 +1,7 @@
 .my-card {
   height: 158px;
   min-width: 130px;
+  max-width: 130px !important;
  border-radius: 10px;
   overflow: hidden;
 }

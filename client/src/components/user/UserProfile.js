@@ -4,6 +4,8 @@ import { connect } from 'react-redux'
 
 import UserOpcao from './UserOpcao'
 
+import './userProfile.scss'
+
 class UserProfile extends Component {
   // gotoUserReceitas = () => {
   //   return this.props.history.push({
@@ -17,22 +19,25 @@ class UserProfile extends Component {
       {
         id: 0,
         nome: 'Receitas Favoritas',
+        url: '/perfil',
         isAdd: false
       },
       {
         id: 1,
         nome: 'Criar Receita',
+        url: '/receita/criar',
         isAdd: true
       },
       {
         id: 2,
         nome: 'Minhas Receitas',
-        url: 'perfil/receitas',
+        url: '/perfil/receitas',
         isAdd: false
       },
       {
         id: 3,
         nome: 'Lixeira',
+        url: '/perfil',
         isAdd: false
       }
     ]
@@ -41,12 +46,11 @@ class UserProfile extends Component {
       <div className="container">
         {this.props.user ? <h4> Olá, {this.props.user.nome}</h4> : null}
         <div className="row">
-          <div className="col-sm">
-            a
-          </div>
-          <div className="col-sm">
-            a
-          </div>
+          {
+            opcoes.map(opcao => {
+              return <div className="opcao"><UserOpcao opcao={opcao} /></div>
+            })
+          }
         </div>
       </div>
     );
