@@ -1,0 +1,29 @@
+.user-opcao {
+  width: 152px;
+  height: 152px;
+border-radius: 18px;
+}
+.opcao-add {
+  background: #E85727;
+border-radius: 18px;
+}
+.opcao-default {
+  background: #FFFFFF;
+border: 2px solid #4BBDBD;
+}
+
+.opcao-icone {
+  width: 32px;
+  height: 32px;
+  background-color: red;
+  display: inline-block;
+  margin: auto auto;
+  // line-height: 100%;
+}
+
+@media only screen and (max-width: 641px) {
+  .user-opcao {
+    width: 132px;
+    height: 132px;
+  }
+}

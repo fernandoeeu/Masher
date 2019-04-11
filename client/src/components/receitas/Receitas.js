@@ -36,10 +36,12 @@ const Receitas = props => {
   }, [receita])
 
   return (
-    <div className="my-card m-2 ml-auto card-largo card-receita">
+    <div className="my-card card-largo card-receita">
       <div className="my-card-img" />
       <div className="my-card-body">
-        <p className="my-card-title">{props.receita.nome}</p>
+        <div className="my-card-title">
+          <p className="title">{props.receita.nome}</p>
+        </div>
         <a onClick={() => gotoReceita(props.receita.id)} className="">Go!</a>
       </div>
     </div>

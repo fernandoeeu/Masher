@@ -41,9 +41,14 @@ const Navbar = props => {
 
   return (
     <nav className="navbar bottom-nav navbar-light fixed-bottom d-flex justify-content-between border-top">
-      <button className="btn btn-default ml-4">Home</button>
+      <NavLink to="/"><button className="btn btn-default ml-4">Home</button></NavLink>
       <span>MASHER</span>
-      <button className="btn btn-default mr-4">{user ? 'Perfil' : 'Entrar'}</button>
+      {
+        user ?
+          <NavLink to="/perfil" ><button className="btn btn-default">Perfil</button></NavLink> :
+          <NavLink to="/signin" ><button className="btn btn-default">Entrar</button></NavLink>
+      }
+
     </nav>
   );
 }

@@ -1,7 +1,8 @@
 .my-card {
-  min-width: 130px;
   height: 158px;
-  border-radius: 10px;
+  min-width: 130px;
+ border-radius: 10px;
+  overflow: hidden;
 }
 
 .my-card-img  {
@@ -15,15 +16,19 @@
 .my-card-body {
   height: 38%;
   background-color: #E3E8F1;
-  word-wrap: break-word;
+  /* word-wrap: break-word; */
 }
 
 .my-card-title {
-  width: 100%;
-  font-size: 13px;
-  top: -5px;
-  margin-left: 8px;
+  height: 50%;
+  min-width: 130px;
+  background-color: red;
+  overflow: hidden;
+}
+
+.title {
+  margin: 2px 7px;
+  font-size: 14px;
   font-weight: bold;
   color: #424242;
-  word-wrap: break-word;
 }

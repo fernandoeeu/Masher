@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { NavLink, Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 
+import UserOpcao from './UserOpcao'
+
 class UserProfile extends Component {
   // gotoUserReceitas = () => {
   //   return this.props.history.push({
@@ -11,40 +13,39 @@ class UserProfile extends Component {
   //   });
   // }
   render() {
+    const opcoes = [
+      {
+        id: 0,
+        nome: 'Receitas Favoritas',
+        isAdd: false
+      },
+      {
+        id: 1,
+        nome: 'Criar Receita',
+        isAdd: true
+      },
+      {
+        id: 2,
+        nome: 'Minhas Receitas',
+        url: 'perfil/receitas',
+        isAdd: false
+      },
+      {
+        id: 3,
+        nome: 'Lixeira',
+        isAdd: false
+      }
+    ]
     console.log(this.props)
     return (
       <div className="container">
-        {this.props.user ? <h4>{this.props.user.nome}</h4> : null}
-        <div className="row my-5">
-          <div className="col-md-4 my-2">
-            <div className="card">
-              <div className="card-body">
-                <h5 className="card-title">Minhas Receitas</h5>
-                <Link to={{
-                  pathname: 'perfil/receitas', props: {
-                    user: this.props.user
-                  }
-                }}>
-                  Receitas
-                </Link>
-              </div>
-            </div>
+        {this.props.user ? <h4> Olá, {this.props.user.nome}</h4> : null}
+        <div className="row">
+          <div className="col-sm">
+            a
           </div>
-          <div className="col-md-4 my-2">
-            <div className="card">
-              <div className="card-body">
-                <h5 className="card-title">Favoritas</h5>
-                <a href="" className="btn btn-primary">Go somewhere</a>
-              </div>
-            </div>
-          </div>
-          <div className="col-md-4 my-2">
-            <div className="card">
-              <div className="card-body">
-                <h5 className="card-title">Etctera</h5>
-                <a href="" className="btn btn-primary">Go somewhere</a>
-              </div>
-            </div>
+          <div className="col-sm">
+            a
           </div>
         </div>
       </div>
