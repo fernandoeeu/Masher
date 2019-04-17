@@ -8,7 +8,12 @@
 // Mudei algumas coisas, e provavelmente vai funcionar
 import React, { Component } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { animateSwitch } from './components/animations/animateSwitch'
+import { SlideOut } from './components/animations/SlideOut'
 
+import PageShell from './components/PageShell'
+
+import Landing from './components/Landing.js';
 import Home from "./components/Home.js";
 import Navbar from "./components/navbar/Navbar";
 import ShowReceita from "./components/receitas/ShowReceita";
@@ -27,20 +32,22 @@ import ProtectedRoute from "./components/auth/ProtectedRoute";
 
 class App extends Component {
   render() {
+    const SwitchWithSlide = animateSwitch(Switch, SlideOut)
     return (
       <Provider store={store}>
         <BrowserRouter>
-          <Switch>
-            <Route path="/" component={Home} exact />
+          <SwitchWithSlide>
+            <Route path="/" component={Landing} exact />
+            <Route path="/home" component={Home} exact />
             <Route path="/show-receita" component={ShowReceita} />
-            <Route path="/signin" component={Signin} />
+            <Route path="/signin" component={PageShell(Signin)} />
             <Route path="/signup" component={Signup} />
             <ProtecedRoute path="/receita/criar" component={CriarReceita} />
             <ProtecedRoute path="/perfil" component={UserProfile} exact />
             <ProtectedRoute path="/perfil/receitas" component={UserReceitas} exact />
             <Route component={Error} />
-          </Switch>
-          <Navbar />
+          </SwitchWithSlide>
+          {localStorage.getItem('user') ? <Navbar /> : null}
         </BrowserRouter>
       </Provider>
     );

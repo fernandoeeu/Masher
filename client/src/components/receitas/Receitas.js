@@ -40,7 +40,7 @@ const Receitas = props => {
       <div className="my-card-img" />
       <div className="my-card-body">
         <div className="my-card-title">
-          <p className="title">{props.receita.nome}</p>
+          <p className="title">{props.receita.nome}</p>Angular 1.5.3
         </div>
         <a onClick={() => gotoReceita(props.receita.id)} className="">Go!</a>
       </div>

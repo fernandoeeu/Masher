@@ -40,7 +40,7 @@ class Signin extends Component {
 
           this.setState({ erros: null });
           return this.props.history.push({
-            pathname: "/",
+            pathname: "/home",
             state: { status: 200 },
             from: this.props.location
           });

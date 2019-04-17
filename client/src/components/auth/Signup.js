@@ -37,7 +37,12 @@ export default class Signup extends Component {
           this.setState({ erros: null });
           return this.props.history.push({
             pathname: "/signin",
-            state: { status: 200 },
+            state: [{
+              status: 200
+            },
+          {
+
+          }] ,
             from: this.props.location
           });
         }

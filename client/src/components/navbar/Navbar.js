@@ -33,15 +33,17 @@ const Navbar = props => {
   const onClearLocalStorage = () => {
     localStorage.clear();
     return props.history.push({
-      pathname: "/",
+      pathname: "/home",
       state: { status: 200 },
       from: this.props.location
     });
   };
 
+
+  
   return (
     <nav className="navbar bottom-nav navbar-light fixed-bottom d-flex justify-content-between border-top">
-      <NavLink to="/"><button className="btn btn-default ml-4">Home</button></NavLink>
+      <NavLink to="/home"><button className="btn btn-default ml-4">Home</button></NavLink>
       <span>MASHER</span>
       {
         user ?
