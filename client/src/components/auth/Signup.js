@@ -37,12 +37,15 @@ export default class Signup extends Component {
           this.setState({ erros: null });
           return this.props.history.push({
             pathname: "/signin",
-            state: [{
-              status: 200
-            },
-          {
+            state: [
+              {
+                status: 200
+              },
+              {
+                email: email,
 
-          }] ,
+              }
+            ],
             from: this.props.location
           });
         }
@@ -60,8 +63,8 @@ export default class Signup extends Component {
 
               {erros
                 ? erros.map(erro => (
-                    <Mensagem key={erro.msg} msg={erro.msg} type={"erro"} />
-                  ))
+                  <Mensagem key={erro.msg} msg={erro.msg} type={"erro"} />
+                ))
                 : null}
 
               <div className="form-group">

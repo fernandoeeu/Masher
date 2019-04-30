@@ -44,7 +44,7 @@ class UserProfile extends Component {
     console.log(this.props)
     return (
       <div className="container">
-        {this.props.user ? <h4> Olá, {this.props.user.nome}</h4> : null}
+        {this.props.userRedux ? <h4> Olá, {this.props.userRedux.nome}</h4> : null}
         <div className="row">
           {
             opcoes.map(opcao => {
@@ -58,7 +58,7 @@ class UserProfile extends Component {
 }
 
 const mapStateToProps = state => ({
-  user: JSON.parse(state.user.user)
+  userRedux: JSON.parse(state.user.user)
 })
 
 export default connect(mapStateToProps)(UserProfile)

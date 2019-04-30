@@ -67,3 +67,46 @@
   margin-bottom: 50px;
 }
 
+ /* Novo css */
+
+ .logo-masher-div {
+
+   
+  }
+  
+  .logo-masher-div {
+   margin-top: 55px;
+   min-height: 15vh;
+ }
+
+ .side-menu {
+  height: 60vh;
+  min-height: 30vh;
+ }
+
+ .menu-slot {
+   margin: 5px;
+   height: 25px;
+ }
+
+ .navlink {
+   color: black;
+   text-decoration: none;
+   transition: 0.3s;
+ }
+
+ .navlink:hover {
+   color: #E11948;
+   text-decoration: none;
+   transition: 0.3s;
+ }
+
+ .menu-item {
+   text-align: center;
+   color: black !important;
+ }
+
+ .menu-item-active {
+  margin-left: -6px;
+  border-left: 5px purple solid;
+ }

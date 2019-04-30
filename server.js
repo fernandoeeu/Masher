@@ -43,7 +43,7 @@ require('./server/src/controllers/categoriasController')(app)
 
 
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5002;
 
 //Static file declaration
 app.use(express.static(path.join(__dirname, 'client/build')));

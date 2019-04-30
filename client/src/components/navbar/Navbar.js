@@ -40,9 +40,9 @@ const Navbar = props => {
   };
 
 
-  
+
   return (
-    <nav className="navbar bottom-nav navbar-light fixed-bottom d-flex justify-content-between border-top">
+    <nav className="navbar bottom-nav navbar-light fixed-top d-flex justify-content-between border-top">
       <NavLink to="/home"><button className="btn btn-default ml-4">Home</button></NavLink>
       <span>MASHER</span>
       {
