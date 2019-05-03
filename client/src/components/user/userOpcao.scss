@@ -1,33 +1,25 @@
 .user-opcao {
-  width: 152px;
-  height: 152px;
-border-radius: 18px;
-}
-.user-opcao-impar {
-  position: absolute;
-  right: 50%;
-}
-.opcao-add {
-  background: #E85727;
-border-radius: 18px;
-}
-.opcao-default {
-  background: #FFFFFF;
-border: 2px solid #4BBDBD;
+  color: #fff;
+  transition: 0.3s;
+  cursor: pointer;
 }
 
-.opcao-icone {
-  width: 32px;
-  height: 32px;
-  background-color: red;
-  display: inline-block;
-  margin: auto auto;
-  // line-height: 100%;
+.user-opcao:after {
+  content: "";
+  display: block;
+  margin: 0 auto;
+  width: 30%;
+  padding-top: 1px;
+  border-bottom: 2px solid white;
+  transition: 0.3s;
 }
 
-@media only screen and (max-width: 641px) {
-  .user-opcao {
-    width: 132px;
-    height: 132px;
-  }
+.user-opcao:hover:after {
+  border-bottom: 2px solid lightcoral;
+  transition: 0.3s;
+}
+
+.user-opcao:hover {
+  color: lightcoral;
+  transition: 0.3s;
 }

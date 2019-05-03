@@ -16,7 +16,8 @@
   padding: 5px;
 }
 
-.hz, .card-receita {
+.hz,
+.card-receita {
   display: inline-block;
   margin: 5px;
 }
@@ -50,9 +51,9 @@
   color: #768189;
 }
 
-.first-section, .third-section {
-  box-shadow: 4px 6px 4px -4px #E3E8F1;
-
+.first-section,
+.third-section {
+  box-shadow: 4px 6px 4px -4px #e3e8f1;
 }
 
 .wrapper-acoes-rapidas {
@@ -67,46 +68,44 @@
   margin-bottom: 50px;
 }
 
- /* Novo css */
+/* Novo css */
 
- .logo-masher-div {
+.logo-masher-div {
+}
 
-   
-  }
-  
-  .logo-masher-div {
-   margin-top: 55px;
-   min-height: 15vh;
- }
+.logo-masher-div {
+  margin-top: 55px;
+  min-height: 15vh;
+}
 
- .side-menu {
+.side-menu {
   height: 60vh;
   min-height: 30vh;
- }
+}
 
- .menu-slot {
-   margin: 5px;
-   height: 25px;
- }
+.menu-slot {
+  margin: 5px;
+  height: 25px;
+}
 
- .navlink {
-   color: black;
-   text-decoration: none;
-   transition: 0.3s;
- }
+.navlink {
+  color: black;
+  text-decoration: none;
+  transition: 0.3s;
+}
 
- .navlink:hover {
-   color: #E11948;
-   text-decoration: none;
-   transition: 0.3s;
- }
+.navlink:hover {
+  color: #e11948;
+  text-decoration: none;
+  transition: 0.3s;
+}
 
- .menu-item {
-   text-align: center;
-   color: black !important;
- }
+.menu-item {
+  text-align: center;
+  color: black !important;
+}
 
- .menu-item-active {
+.menu-item-active {
   margin-left: -6px;
   border-left: 5px purple solid;
- }
+}

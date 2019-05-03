@@ -1,19 +1,19 @@
-import React from 'react'
-import { NavLink } from "react-router-dom";
-import './userOpcao.scss'
+import React, { useState } from "react";
+import { NavLink, Link } from "react-router-dom";
+import "./userOpcao.scss";
 
-const UserOpcao = props => {
-  const { opcao } = props
-  const classe = opcao.isAdd ? 'opcao-add' : 'opcao-default'
-  const impar = opcao.id % 2 === 0 ? 'user-opcao-impar' : null
+const UserOpcao = ({ opcao, changeComponent }) => {
+  // let [ativo, setAtivo] = useState(false);
 
   return (
-    <NavLink to={opcao.url}>
-      <div className={`m-1 row  user-opcao ${classe} ${impar}`}>
-        <div className="opcao-icone">{opcao.nome}</div>
-      </div>
-    </NavLink>
-  )
-}
+    <div
+      onClick={() => changeComponent(opcao.nome)}
+      className="mx-4 user-opcao"
+      href=""
+    >
+      {opcao.nome}
+    </div>
+  );
+};
 
-export default UserOpcao
+export default UserOpcao;
