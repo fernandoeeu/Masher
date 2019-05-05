@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { NavLink, Link } from "react-router-dom";
-import { connect } from "react-redux";
 
 import UserOpcao from "./UserOpcao";
+
+import Navbar from "../navbar/Navbar";
 
 import UserReceitas from "./UserReceitas";
 import Lixeira from "./Lixeira";
@@ -15,10 +16,6 @@ class UserProfile extends Component {
     actualComponent: "Minhas Receitas"
   };
 
-  changeComponent = name => {
-    console.log(name);
-    this.setState({ actualComponent: name });
-  };
   render() {
     const opcoes = [
       {
@@ -56,25 +53,11 @@ class UserProfile extends Component {
 
     return (
       <div className="d-flex">
-        <div className="col">
-          <div className="top-nav d-flex flex-row justify-content-center align-items-center">
-            {opcoes.map(opcao => (
-              <UserOpcao
-                key={opcao.id}
-                opcao={opcao}
-                changeComponent={this.changeComponent}
-              />
-            ))}
-          </div>
-          {switchComponents()}
-        </div>
+        <Navbar opcoes={opcoes} />
+        {switchComponents()}
       </div>
     );
   }
 }
 
-const mapStateToProps = state => ({
-  userRedux: JSON.parse(state.user.user)
-});
-
-export default connect(mapStateToProps)(UserProfile);
+export default UserProfile;

@@ -1,7 +1,12 @@
 .user-opcao {
-  color: #fff;
+  color: #b3b3b3;
   transition: 0.3s;
   cursor: pointer;
+}
+
+.user-opcao:hover {
+  color: #fff;
+  transition: 0.3s;
 }
 
 .user-opcao:after {
@@ -10,16 +15,21 @@
   margin: 0 auto;
   width: 30%;
   padding-top: 1px;
-  border-bottom: 2px solid white;
+  border-bottom: 2px solid #333;
   transition: 0.3s;
 }
 
-.user-opcao:hover:after {
-  border-bottom: 2px solid lightcoral;
+.isActive {
+  color: #fff;
   transition: 0.3s;
 }
 
-.user-opcao:hover {
-  color: lightcoral;
+.isActive:after {
+  content: "";
+  display: block;
+  margin: 0 auto;
+  width: 30%;
+  padding-top: 1px;
+  border-bottom: 2px solid #ce1f34;
   transition: 0.3s;
 }

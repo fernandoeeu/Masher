@@ -16,16 +16,14 @@
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import * as ReceitaActions from "../store/actions/receita";
-import * as UserActions from "../store/actions/user";
+
 import firebase from "firebase";
 
 import Receitas from "./receitas/Receitas";
 import Msg from "../components/messages/Mensagem";
 import UserAcaoRapida from "../components/user/UserAcaoRapida";
 import Categoria from "../components/categorias/Categoria";
+import Sidebar from "./sidebar/Sidebar";
 
 import "./Home.scss";
 
@@ -121,36 +119,16 @@ class Home extends Component {
   };
 
   render() {
-    const {
-      pessoas,
-      togglePessoa,
-      pessoaAtiva,
-      fetchReceitasFiltradas,
-      receitas
-    } = this.props;
+    const {} = this.props;
     const { msg, error } = this.state;
-    //console.log(this.props.location)
     return (
       <>
-        {/* {this.state.user ? <h1>Bem-vindo(a), {this.state.user.nome}</h1> : null} */}
-        <div className="main-content">
-          <h4 className="p-4">Home</h4>
+        <div className="d-flex">
+          <Sidebar />
         </div>
       </>
     );
   }
 }
 
-const mapStateToProps = state => ({
-  pessoas: state.curso.pessoas,
-  pessoaAtiva: state.curso.pessoaAtiva,
-  receitas: state.receita.receitas.data,
-  user: state.user.user
-});
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(Object.assign({}, ReceitaActions, UserActions), dispatch);
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Home);
+export default Home;

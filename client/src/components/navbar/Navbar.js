@@ -1,65 +1,22 @@
-// {/* <>
-//   <span>Olá, {user.nome}</span>
-//   <NavLink
-//     to="/receita/criar"
-//     className="nav-item nav-link"
-//     href="#"
-//   >
-//     Criar receita
-//     </NavLink>
-//   <NavLink to="/perfil" className="nav-item nav-link">
-//     Perfil
-//     </NavLink>
-//   <NavLink
-//     to="/"
-//     className="nav-item nav-link"
-//     onClick={() => onClearLocalStorage()}
-//   >
-//     Sair
-//     </NavLink>
-// </> */}
-import React, { useState, useEffect } from "react";
-import { connect } from "react-redux";
-import { NavLink } from "react-router-dom";
+import React, { useState, useEffect, useContext } from "react";
+import { observer } from "mobx-react-lite";
+import { UiStoreContext } from "../../stores/UiStore.js";
+import UserOpcao from "../user/UserOpcao";
 
-import './navbar.scss'
+import "./navbar.scss";
 
-const Navbar = props => {
-
-  const [user, setUser] = useState({})
-  useEffect(() => {
-    setUser(JSON.parse(localStorage.getItem('user')))
-  }, [localStorage.getItem('user')])
-  const onClearLocalStorage = () => {
-    localStorage.clear();
-    return props.history.push({
-      pathname: "/home",
-      state: { status: 200 },
-      from: this.props.location
-    });
-  };
-
-
+const Navbar = observer(({ opcoes, changeContent }) => {
+  const uiStore = useContext(UiStoreContext);
 
   return (
-    <nav className="navbar bottom-nav navbar-light fixed-top d-flex justify-content-between border-top">
-      <NavLink to="/home"><button className="btn btn-default ml-4">Home</button></NavLink>
-      <span>MASHER</span>
-      {
-        user ?
-          <NavLink to="/perfil" ><button className="btn btn-default">Perfil</button></NavLink> :
-          <NavLink to="/signin" ><button className="btn btn-default">Entrar</button></NavLink>
-      }
-
-    </nav>
+    <div className="top-nav d-flex flex-row justify-content-center align-items-center">
+      {opcoes.map(opcao => (
+        <UserOpcao key={opcao.id} opcao={opcao} changeContent={changeContent} />
+      ))}
+    </div>
   );
-}
-
-
-const mapStateToProps = state => ({
-  user: state.user.user
 });
 
 // const mapDispatchToProps = dispatch
 
-export default connect(mapStateToProps)(Navbar);
+export default Navbar;

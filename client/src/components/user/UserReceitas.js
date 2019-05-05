@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { connect } from "react-redux";
 import UserReceita from "./UserReceita";
 import firebase from "firebase";
 import axios from "axios";
@@ -53,8 +52,4 @@ const UserReceitas = props => {
   );
 };
 
-const mapStateToProps = state => ({
-  user: state.user.user
-});
-
-export default connect(mapStateToProps)(UserReceitas);
+export default UserReceitas;

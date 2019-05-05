@@ -1,7 +1,4 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import * as UserActions from "../../store/actions/user";
 import axios from "axios";
 import { NavLink, Link } from "react-router-dom";
 import firebase from "firebase";
@@ -141,13 +138,4 @@ class Signin extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  user: state.user.user
-});
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(Object.assign({}, UserActions), dispatch);
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Signin);
+export default Signin;

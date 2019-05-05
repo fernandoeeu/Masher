@@ -1,7 +1,4 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import * as UserActions from "../../store/actions/user";
 import axios from "axios";
 import firebase from "firebase";
 
@@ -139,14 +136,4 @@ class CriarReceita extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  user: state.user
-});
-
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(Object.assign({}, UserActions), dispatch);
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CriarReceita);
+export default CriarReceita;

@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
+import { observer } from "mobx-react-lite";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { UiStoreContext } from "./stores/UiStore";
 
 import Wrapper from "./components/wrapper/Wrapper.js";
 
@@ -18,9 +20,8 @@ import HasntUser from "./components/auth/HasntUser";
 import UserReceitas from "./components/user/UserReceitas";
 import Error from "./components/Error";
 
-import { Provider } from "react-redux";
+import { Provider } from "mobx-react";
 
-import store from "./store";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 
 import "./app.scss";
@@ -40,14 +41,15 @@ const routes = [
   }
 ];
 
-const App = () => {
+const App = observer(() => {
   const [hasUser, setHasUSer] = useState(false);
+  const UiStore = useContext(UiStoreContext);
 
   useEffect(() => {
     setHasUSer(true);
   }, [localStorage.getItem("user")]);
   return (
-    <Provider store={store}>
+    <Provider UiStore={UiStore}>
       <Router>
         <HasntUser path="/" component={Landing} exact />
         <HasUser path="/home" component={Sidebar} exact />
@@ -60,6 +62,6 @@ const App = () => {
       </Router>
     </Provider>
   );
-};
+});
 
 export default App;
