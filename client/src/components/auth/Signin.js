@@ -53,7 +53,7 @@ class Signin extends Component {
 
   provider = new firebase.auth.GoogleAuthProvider();
 
-  signInWithGoogle = () => {
+  signInWithGoogle = async () => {
     firebase
       .auth()
       .signInWithPopup(this.provider)
@@ -66,21 +66,23 @@ class Signin extends Component {
         });
       })
       .catch(e => console.log(e));
+    const user = await firebase.auth().currentUser;
+    user ? console.log('user: ' + user) : console.log('nada aqui...')
   };
 
   render() {
     const { status, erros } = this.state;
     //console.log(this.state.status);
     return (
-      <div className="container main-div">
+      <div className="container">
         <div className="row">
           <div className="col-md-4 offset-md-4">
             <form onSubmit={e => this.SignInWithEmailFromMongo(e)}>
               <h4 className="my-3">Entrar</h4>
               {erros
                 ? erros.map(erro => (
-                    <Mensagem key={erro.msg} msg={erro.msg} type={"erro"} />
-                  ))
+                  <Mensagem key={erro.msg} msg={erro.msg} type={"erro"} />
+                ))
                 : null}
               {status === 200 ? (
                 <Mensagem

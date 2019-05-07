@@ -67,7 +67,7 @@ const Sidebar = observer(({ routes }) => {
   return (
     <>
       <div className="d-flex flex-row">
-        <div class="col-3 main-div" style={{}}>
+        <div className="col-3 main-div" style={{}}>
           <div className="d-flex flex-column p-1 sidebar-wrapper">
             <div className="row py-3 px-4">
               <h2>Masher</h2>

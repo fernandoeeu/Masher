@@ -23,17 +23,17 @@ const UserReceitas = props => {
       .catch(err => console.log("Erro", err.response));
   };
 
-  useEffect(() => {
-    try {
-      firebase.auth().onAuthStateChanged(user => {
-        setUid(user.uid);
-      });
-    } catch (e) {
-      console.log(e);
-    }
+  // useEffect(() => {
+  //   try {
+  //     firebase.auth().onAuthStateChanged(user => {
+  //       setUid(user.uid);
+  //     });
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
 
-    fetchUserReceitas();
-  }, []);
+  //   fetchUserReceitas();
+  // }, []);
 
   return (
     <div className="container">
@@ -41,11 +41,11 @@ const UserReceitas = props => {
       <div className="row">
         {userReceitas
           ? userReceitas.map(receita => (
-              <div className="receita">
-                {" "}
-                <Receitas receita={receita} />
-              </div>
-            ))
+            <div className="receita">
+              {" "}
+              <Receitas receita={receita} />
+            </div>
+          ))
           : null}
       </div>
     </div>

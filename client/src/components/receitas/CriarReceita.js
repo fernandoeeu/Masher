@@ -11,27 +11,27 @@ class CriarReceita extends Component {
     userToken: null
   };
 
-  componentDidMount() {
-    firebase.auth().onAuthStateChanged(user => {
-      firebase
-        .auth()
-        .currentUser.getIdToken()
-        .then(token =>
-          this.setState({
-            userToken: token
-          })
-        );
-      if (user) {
-        this.setState({
-          uid: user.uid
-        });
-      } else {
-        this.setState({
-          uid: null
-        });
-      }
-    });
-  }
+  // componentDidMount() {
+  //   firebase.auth().onAuthStateChanged(user => {
+  //     firebase
+  //       .auth()
+  //       .currentUser.getIdToken()
+  //       .then(token =>
+  //         this.setState({
+  //           userToken: token
+  //         })
+  //       );
+  //     if (user) {
+  //       this.setState({
+  //         uid: user.uid
+  //       });
+  //     } else {
+  //       this.setState({
+  //         uid: null
+  //       });
+  //     }
+  //   });
+  // }
 
   onHandleSubmit = async e => {
     const { titulo, ingredientes, categorias } = this.state;
