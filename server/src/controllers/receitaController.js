@@ -81,24 +81,24 @@ router.post("/receitas/atualizar/:rid", (req, res) => {
 })
 
 
-router.post("/receitas/criar", auth, async (req, res) => {
-  let { titulo, categorias, ingredientes } = req.body;
-  categorias = categorias.map(categoria => categoria.trim());
+router.post("/receitas/criar",  async (req, res) => {
+  let { titulo, categorias, ingredientes, uid } = req.body;
+  try {
+    categorias = categorias.map(categoria => categoria.trim());
   ingredientes = ingredientes.map(ingrediente => ingrediente.trim());
-  // const receita = {
-  //   titulo,
-  //   categorias,
-  //   ingredientes
-  // };
+  } catch (e) {
+    return res.status(400).send({ error: "Por favor, entre com os ingredientes e categorias"})
+  }
   let receita = new Receita()
   receita.nome = titulo
   receita.ing = ingredientes
   receita.cat = categorias
-  receita.createdBy = req.body.user.id
+  receita.createdBy = uid
   receita.save(function (err) {
     if (err) {
       return console.log("err", err)
     } else {
+      console.log(receita)
       res.send({ msg: 'ok' })
     }
   })

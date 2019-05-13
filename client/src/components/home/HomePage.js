@@ -3,7 +3,6 @@ import React from "react";
 import Receitas from "../receitas/Receitas";
 import Msg from "../messages/Mensagem";
 import UserAcaoRapida from "../user/UserAcaoRapida";
-import Categoria from "../categorias/Categoria";
 
 const HomePage = ({ msg, error, categorias, receitas }) => {
   return (

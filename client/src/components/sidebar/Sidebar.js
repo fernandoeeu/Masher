@@ -1,17 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Route, Link } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import { UiStoreContext } from "../../stores/UiStore.js";
-
-import Inicio from "../inicio/Inicio";
-import Busca from "../busca/Busca";
+import firebase from 'firebase'
 
 import "./style/main.scss";
-import UserOpcao from "../user/UserOpcao";
-import UserProfile from "../user/UserProfile";
 import MainContentController from "../controllers/MainContentController";
 
-const Sidebar = observer(({ routes }) => {
+const Sidebar = observer(({ location }) => {
   const uiStore = useContext(UiStoreContext);
   const opcoes = [
     {
@@ -40,30 +36,19 @@ const Sidebar = observer(({ routes }) => {
     console.log(nome);
     setCompAtual(nome);
   };
-  useEffect(() => {
-    switchComponents();
-  }, [uiStore.UiStoreContext]);
 
-  const switchComponents = () => {
-    switch (uiStore.sideMenuActiveItem) {
-      case "Início":
-        return <MainContentController />;
-      case "Busca":
-        return <MainContentController />;
-      case "Dashboard":
-        return <MainContentController />;
-      case "Perfil":
-        return <MainContentController />;
-      default:
-        return <MainContentController />;
-    }
-  };
 
   const clickHandler = (conteudo, nome) => {
-    console.log(conteudo);
     uiStore.changeConteudoAtual(conteudo);
     uiStore.changeSideMenuActiveItem(nome);
   };
+
+  const sair = () => {
+    firebase.auth().signOut()
+    console.log('saiu')
+    return <Redirect to={{ pathname: "/home", from: location }} />;
+  }
+
   return (
     <>
       <div className="d-flex flex-row">
@@ -87,10 +72,11 @@ const Sidebar = observer(({ routes }) => {
                   {opcao.nome}
                 </div>
               ))}
+              <div onClick={() => sair()} className="btn btn-default">Sair!</div>
             </div>
           </div>
         </div>
-        <div className="col-9 conteudo">{switchComponents()}</div>
+        <div className="col-9 conteudo"><MainContentController /></div>
       </div>
     </>
   );

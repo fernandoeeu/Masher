@@ -22,7 +22,6 @@ import firebase from "firebase";
 import Receitas from "./receitas/Receitas";
 import Msg from "../components/messages/Mensagem";
 import UserAcaoRapida from "../components/user/UserAcaoRapida";
-import Categoria from "../components/categorias/Categoria";
 import Sidebar from "./sidebar/Sidebar";
 
 import "./Home.scss";
@@ -112,14 +111,14 @@ class Home extends Component {
         console.log(err);
       });
   };
-  fetchFiltrado = () => {};
+  fetchFiltrado = () => { };
 
   clear = () => {
     this.setState({ receitas: null });
   };
 
   render() {
-    const {} = this.props;
+    const { } = this.props;
     const { msg, error } = this.state;
     return (
       <>

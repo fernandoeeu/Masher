@@ -3,7 +3,6 @@ import UserReceita from "./UserReceita";
 import firebase from "firebase";
 import axios from "axios";
 
-import Receitas from "../receitas/Receitas";
 
 import "./userReceitas.scss";
 
@@ -13,38 +12,37 @@ const UserReceitas = props => {
   const [uid, setUid] = useState();
   const [userReceitas, setUserReceitas] = useState([]);
 
-  const fetchUserReceitas = () => {
+  const fetchUserReceitas = uid => {
     axios
-      .post(`/api/receitas/busca/JjiIxVqOWsMYZpIxjbg8RnZTcv72`)
+      .post(`/api/receitas/busca/${uid}`)
       .then(res => {
-        console.log(res);
-        setUserReceitas(res);
+        setUserReceitas(res.data);
       })
       .catch(err => console.log("Erro", err.response));
   };
 
-  // useEffect(() => {
-  //   try {
-  //     firebase.auth().onAuthStateChanged(user => {
-  //       setUid(user.uid);
-  //     });
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
+  useEffect(() => {
+    checkUser()
 
-  //   fetchUserReceitas();
-  // }, []);
+
+  }, []);
+
+  const checkUser = () => {
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        fetchUserReceitas(user.uid);
+      } else {
+        console.log('not signed in')
+      }
+    })
+  }
 
   return (
     <div className="container">
-      <h2>{userReceitas.length}</h2>
-      <div className="row">
+      <div className="d-flex flex-wrap justify-content-center my-5">
         {userReceitas
           ? userReceitas.map(receita => (
-            <div className="receita">
-              {" "}
-              <Receitas receita={receita} />
-            </div>
+            <UserReceita key={receita._id} receita={receita} />
           ))
           : null}
       </div>

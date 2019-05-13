@@ -1,0 +1,20 @@
+
+.sub-cat-wrapper {
+    position: relative;
+    max-width: 50%;
+    overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+}
+
+.sub-cat {
+    display: inline-block;
+    border: 1px solid black;
+}
+
+.nome-receita, .categorias-principais, .categorias-secundarias, .ingredientes, .passo-a-passo, .tempo-custo-dificuldade {
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 22px;
+  color: #BEB8B9;
+}

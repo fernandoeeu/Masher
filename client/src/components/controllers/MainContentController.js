@@ -98,6 +98,8 @@ const MainContentController = observer(() => {
         return <Notificacoes />;
       case "Visão Geral":
         return <VisaoGeral />;
+      case "Editar Perfil":
+        return <EditarPerfil />;
       default:
         return <EmDestaque />;
     }

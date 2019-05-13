@@ -1,0 +1,121 @@
+import React, { useState, useEffect, useContext } from "react";
+import { observer } from "mobx-react-lite";
+import { UiStoreContext } from "../../stores/UiStore.js";
+import axios from "axios";
+import firebase from "firebase";
+
+const CriarReceita = observer(props => {
+
+  const uiStore = useContext(UiStoreContext);
+
+  const [titulo, setTitulo] = useState('');
+  const [ingredientes, setIngredientes] = useState([]);
+  const [categorias, setCategorias] = useState([])
+  const [receita, setReceita] = useState({})
+  const [userToken, setUserToken] = useState()
+  const [uid, setUid] = useState()
+
+  useEffect(() => {
+    checkUser()
+  }, [])
+
+  const checkUser = () => {
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        setUid(user.uid)
+      } else {
+        console.log('not signed in')
+      }
+    })
+  }
+
+  const onHandleSubmit = async e => {
+    e.preventDefault();
+    let ingArr = []
+    let catArr = []
+    try {
+      ingArr = ingredientes.split(",");
+      catArr = categorias.split(",");
+    } catch (e) {
+      console.log('Preencha os ingredientes e categorias')
+    }
+    const newReceita = {
+      titulo,
+      ingredientes: ingArr,
+      categorias: catArr,
+      uid
+    };
+    setReceita(newReceita)
+
+    axios
+      .post("/api/receitas/criar", newReceita, {
+        // headers: {
+        //   "x-auth-token": this.state.userToken
+        // }
+      })
+      .then(res => {
+        if (res.status === 200) {
+          // redireciona para pagina de receitas criadas
+          console.log('funcionou!')
+          uiStore.changeConteudoAtual('Suas Receitas')
+        }
+      })
+      .catch(err => console.log("erro", err));
+  };
+  
+    return (
+      <>
+        {/* <h4 className="mt-3 mb-5">Criar receita</h4> */}
+        <div className="d-flex justify-content-center">
+          <div className="row">
+            <div className="">
+              <form onSubmit={e => onHandleSubmit(e)}>
+                <div className="form-group">
+                  <h5 htmlFor="titulo">Título</h5>
+                  <input
+                    name="titulo"
+                    onChange={e => setTitulo(e.target.value)}
+                    type="text"
+                    className="form-control"
+                  />
+                  <small className="form-text text-muted">
+                    Aqui vai o nome da sua receita
+                  </small>
+                </div>
+                <div className="form-group">
+                  <h5 htmlFor="ing">Ingredientes</h5>
+                  <input
+                    name="ingredientes"
+                    onChange={e => setIngredientes(e.target.value)}
+                    type="text"
+                    className="form-control"
+                  />
+                  <small className="form-text text-muted">
+                    Entre com os Ingredientes separados por vírgula
+                  </small>
+                </div>
+                <div className="form-group">
+                  <h5 htmlFor="cat">Categorias</h5>
+                  <input
+                    name="categorias"
+                    onChange={e => setCategorias(e.target.value)}
+                    type="text"
+                    className="form-control"
+                  />
+                  <small className="form-text text-muted">
+                    As categorias que sua receita se encaixa
+                  </small>
+                </div>
+                <button className="btn btn-outline-success btn-block">
+                  Enviar
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  })
+
+
+export default CriarReceita;

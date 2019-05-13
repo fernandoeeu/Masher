@@ -1,17 +1,22 @@
 import React from 'react'
 
+import './style/userReceita.scss'
+
 const UserReceita = props => {
   const { receita } = props
+  let nome = receita.nome
+  if (nome.length > 18) {
+    nome = nome.slice(0, 18)
+    console.log(nome)
+  }
+
   return (
-    <div className="col-md-2">
-      <div className="card">
-        <div className="card-body">
-          <h5 className="card-title">{receita.nome}</h5>
-          <div className="btn-group" role="group">
-            <button className="btn btn-primary">Editar</button>
-            <button className="btn btn-danger">Excluir</button>
-          </div>
-        </div>
+    <div className="d-flex user-receita p-2 m-2">
+      <div className="title">
+        <p className="receita-title">{nome}</p>
+      </div>
+      <div className="rate">
+        <p>4,5</p>
       </div>
     </div>
   )

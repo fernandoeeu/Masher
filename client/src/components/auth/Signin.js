@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import axios from "axios";
 import { NavLink, Link } from "react-router-dom";
 import firebase from "firebase";
+import { observer } from "mobx-react-lite";
+import { AuthStoreContext } from "../../stores/authStore";
 
 import { signInWithGoogle } from "./firebase/SignInMethods";
 
