@@ -4,7 +4,8 @@ import {
   observable,
   runInAction,
   flow,
-  decorate
+  decorate,
+  toJS
 } from "mobx";
 import { createContext } from "react";
 
@@ -29,19 +30,26 @@ class UiStore {
   }
   addCategoriaSecundaria = categoria => {
     this.categoriaSecundaria.push(categoria)
+
   }
+
+  changeCategoriaSecundaria = categoria => {
+    console.log(categoria)
+    if (!this.categoriaSecundaria.includes(categoria.nome) && this.categoriaPrincipal.includes(categoria.pai)) {
+      this.addCategoriaSecundaria(categoria.nome)
+    } else {
+      this.removeCategoriaSecundaria(categoria.nome)
+    }
+  }
+
   removeCategoriaSecundaria = nome => {
     this.categoriaSecundaria.splice(this.categoriaSecundaria.findIndex(e => e === nome), 1)
-
   }
   addIngredientes = ing => {
     this.ingredientes.push(ing)
-    console.log(this.ingredientes)
-
   }
-  removeIngredientes = nome => {
-    this.ingredientes.splice(this.ingredientes.findIndex(e => e === nome), 1)
-    console.log(this.ingredientes)
+  removeIngredientes = ingrediente => {
+    this.ingredientes.splice(this.ingredientes.findIndex(e => e === ingrediente), 1)
   }
 }
 
@@ -58,7 +66,8 @@ decorate(UiStore, {
   addCategoriaSecundaria: action,
   removeCategoriaSecundaria: action,
   addIngredientes: action,
-  removeIngredientes: action
+  removeIngredientes: action,
+  changeCategoriaSecundaria: action
 });
 
 const singleton = new UiStore();

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+import { toJS } from 'mobx'
 import { observer } from "mobx-react-lite";
 import { UiStoreContext } from "../../stores/UiStore.js";
 import axios from "axios";
@@ -23,11 +24,10 @@ const CriarReceita = observer(props => {
   const [dificuldade, setDificuldade] = useState('')
   const [passos, setPassos] = useState('')
   const [titulo, setTitulo] = useState('');
-  const [ingredientes, setIngredientes] = useState([]);
-  const [categorias, setCategorias] = useState([])
+  const [contIngredientes, setContIngredientes] = useState(0)
   const [receita, setReceita] = useState({})
-  const [userToken, setUserToken] = useState()
   const [uid, setUid] = useState()
+
 
   const categoriasPrincipais = [
     {
@@ -83,19 +83,19 @@ const CriarReceita = observer(props => {
       nome: ing,
       qtd: qtd
     }
-    setIngredientes([...ingredientes, tmpIng])
-    console.log('ing', ing)
-    uiStore.addIngredientes(ing)
+    //setIngredientes([...ingredientes, tmpIng])
+    uiStore.addIngredientes(tmpIng)
     setIng('')
     setQtd('')
+    setContIngredientes(contIngredientes + 1)
   }
 
   const onHandleSubmit = async () => {
     const newReceita = {
       titulo,
-      ingredientes: ingredientes,
-      categoriasPrincipais: uiStore.categoriaPrincipal,
-      categoriaSecundaria: uiStore.categoriaSecundaria,
+      ingredientes: toJS(uiStore.ingredientes),
+      categoriasPrincipais: toJS(uiStore.categoriaPrincipal),
+      categoriasSecundarias: toJS(uiStore.categoriaSecundaria),
       tempo,
       custo,
       dificuldade,
@@ -103,28 +103,30 @@ const CriarReceita = observer(props => {
       uid
     };
     setReceita(newReceita)
-    console.log(newReceita)
-    // axios
-    //   .post("/api/receitas/criar", newReceita, {
-    //     // headers: {
-    //     //   "x-auth-token": this.state.userToken
-    //     // }
-    //   })
-    //   .then(res => {
-    //     if (res.status === 200) {
-    //       // redireciona para pagina de receitas criadas
-    //       console.log('funcionou!')
-    //       uiStore.changeConteudoAtual('Suas Receitas')
-    //     }
-    //   })
-    //   .catch(err => console.log("erro", err));
+    axios
+      .post("/api/receitas/criar", newReceita, {
+        // headers: {
+        //   "x-auth-token": this.state.userToken
+        // }
+      })
+      .then(res => {
+        if (res.status === 200) {
+          // redireciona para pagina de receitas criadas
+          console.log('funcionou!')
+          uiStore.changeConteudoAtual('Suas Receitas')
+        }
+      })
+      .catch(err => console.log("erro", err));
   };
+
+  // set up editor passo a passo
+
 
   return (
     <div className="container">
       <p className="nome-receita">Nome da receita</p>
       <div className="input-group mb-3">
-        <input type="text" className="form-control" aria-label="Text input with dropdown button" />
+        <input onChange={e => setTitulo(e.target.value)} type="text" className="form-control" aria-label="Text input with dropdown button" />
       </div>
 
       {/* Categorias Principais */}
@@ -151,25 +153,31 @@ const CriarReceita = observer(props => {
 
       {/* Ingredientes */}
       <p className="ingredientes">Ingrediente - Quantidade</p>
+      <p className="label-ingredientes"> Clique para excluir</p>
       <div className="row my-2">
         <div className="col-5">
-          <input value={ing} onChange={e => setIng(e.target.value)} type="text" className="form-control" name="ing" id="" />
+          <input placeholder="farinha de trigo..." value={ing} onChange={e => setIng(e.target.value)} type="text" className="form-control" name="ing" id="" />
         </div>
         <div className="col-5">
-          <input value={qtd} onChange={e => setQtd(e.target.value)} type="text" className="form-control" name="qtd" id="" />
+          <input placeholder="100 gramas..." value={qtd} onChange={e => setQtd(e.target.value)} type="text" className="form-control" name="qtd" id="" />
         </div>
         <div className="col-2">
           <button onClick={() => addIngredientes()} className="btn btn-default">Adicionar</button>
         </div>
       </div>
       <div className="row mx-2 my-2">
-        {uiStore.ingredientes.map((ing, i) => <Ingrediente key={i} ingrediente={ing} />)}
+
+        {
+          toJS(uiStore.ingredientes.length > 0) ?
+            toJS(uiStore.ingredientes).map((ing, i) => <Ingrediente key={i} ingrediente={ing} />) :
+            null
+        }
       </div>
 
       {/* passo a passo */}
-      <p className="passo-a-passo">Passo a passo - separe por vírgula</p>
+      <p className="passo-a-passo">Passo a passo</p>
       <div className="input-group mb-3">
-        <textarea value={passos} onChange={e => setPassos(e.target.value)} type="text" className="form-control" aria-label="Text input with dropdown button" />
+        <textarea placeholder="explique o processo detalhadamente..." id="passosapasso" value={passos} onChange={e => setPassos(e.target.value)} type="text" className="form-control" aria-label="Text input with dropdown button" />
       </div>
 
       {/* Tempo estimado - Custo - Dificuldade */}

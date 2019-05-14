@@ -12,17 +12,18 @@ const Categoria = observer(({ categoria }) => {
 
 
     const toggleCat = nome => {
-        if (!isAdd) {
+        if (uiStore.categoriaPrincipal.includes(categoria.pai) || (!uiStore.categoriaSecundaria.includes(nome))) {
             uiStore.addCategoriaSecundaria(nome)
-            setIsAdd(true)
+            console.log('o pai ta la')
+            // setIsAdd(false)
         } else {
             uiStore.removeCategoriaSecundaria(nome)
-            setIsAdd(false)
+            // setIsAdd(true)
+            console.log('tem')
         }
-
     }
     return (
-        <div className={"categoria-secundaria m-2" + (uiStore.categoriaSecundaria.includes(nome) ? ' categoria-secundaria-active' : '')} onClick={() => toggleCat(nome)}>
+        <div className={"categoria-secundaria m-2" + (uiStore.categoriaSecundaria.includes(nome) ? ' categoria-secundaria-active' : '')} onClick={() => uiStore.changeCategoriaSecundaria(categoria)}>
             <p className="px-2 py-auto">{nome}</p>
         </div>
     )

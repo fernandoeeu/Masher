@@ -18,3 +18,12 @@
   line-height: 22px;
   color: #BEB8B9;
 }
+
+.form-control::placeholder, .label-ingredientes {
+  color: #BEB8B9;
+}
+
+.label-ingredientes {
+  display: inline-block;
+  font-size: 12px;
+}

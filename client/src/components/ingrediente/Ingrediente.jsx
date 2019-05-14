@@ -5,26 +5,19 @@ import './style/main.scss'
 import { observer } from "mobx-react-lite";
 import { UiStoreContext } from "../../stores/UiStore.js";
 
-const Ingrediente = observer(({ nome }) => {
+const Ingrediente = observer(({ ingrediente }) => {
 
     const uiStore = useContext(UiStoreContext);
 
-    console.log(nome)
 
-    const toggleCIng = nome => {
-        const { ingredientes } = uiStore
-        if (ingredientes.includes(nome)) {
-            console.log(nome)
-            uiStore.removeIngredientes(nome)
-        } else {
-            console.log('nnn')
-        }
 
+    const toggleCIng = ingrediente => {
+        uiStore.removeIngredientes(ingrediente)
     }
 
     return (
-        <div className="ingrediente mx-2" onClick={() => toggleCIng(nome)}>
-            <p className="p-3">{nome}</p>
+        <div className="ingrediente mx-2" onClick={() => toggleCIng(ingrediente)}>
+            <p className="p-3">{ingrediente.nome}</p>
         </div>
     )
 })
