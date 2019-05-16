@@ -7,7 +7,6 @@ const UserReceita = props => {
   let nome = receita.nome
   if (nome.length > 18) {
     nome = nome.slice(0, 18)
-    console.log(nome)
   }
 
   return (

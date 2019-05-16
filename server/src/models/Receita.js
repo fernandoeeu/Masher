@@ -9,13 +9,37 @@ const ReceitaSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  ing: {
+  ingredientes: {
     type: [String],
     required: true
   },
-  cat: {
+  ingredientesQtd: {
     type: [String],
     required: true
+  },
+  categoriasPrincipais: {
+    type: [String],
+    required: true
+  },
+  categoriasSecundarias: {
+    type: [String],
+    required: true
+  },
+  tempo: {
+    type: String,
+    required: false
+  },
+  custo: {
+    type: String,
+    required: false
+  },
+  dificuldade: {
+    type: String,
+    required: false
+  },
+  passos: {
+    type: String,
+    required: false
   },
   createdBy: {
     type: String,

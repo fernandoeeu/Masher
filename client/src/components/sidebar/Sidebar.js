@@ -18,7 +18,7 @@ const Sidebar = observer(({ location }) => {
     {
       id: 1,
       nome: "Busca",
-      conteudo: "Busca 01"
+      conteudo: "Busca Inteligente"
     },
     {
       id: 2,

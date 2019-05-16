@@ -2,6 +2,8 @@ import React, { useState, useEffect, useContext } from "react";
 import Navbar from "../navbar/Navbar";
 import Inicio from "../inicio/Inicio";
 
+
+import Busca from '../busca/Busca'
 import UserReceitas from "../user/UserReceitas";
 import CriarReceitas from "../receitas/CriarReceita";
 import EmDestaque from "../inicio/emDestaque/EmDestaque";
@@ -32,7 +34,7 @@ const MainContentController = observer(() => {
   const buscaOpcoes = [
     {
       id: 0,
-      nome: "busca 01"
+      nome: "Busca Inteligente"
     },
     {
       id: 1,
@@ -100,6 +102,8 @@ const MainContentController = observer(() => {
         return <VisaoGeral />;
       case "Editar Perfil":
         return <EditarPerfil />;
+      case "Busca Inteligente":
+        return <Busca />;
       default:
         return <EmDestaque />;
     }

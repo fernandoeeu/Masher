@@ -28,6 +28,20 @@ const CriarReceita = observer(props => {
   const [receita, setReceita] = useState({})
   const [uid, setUid] = useState()
 
+  const limparCampos = () => {
+    setIng('')
+    setQtd('')
+    setTempo('')
+    setCusto('')
+    setDificuldade('')
+    setPassos('')
+    setTitulo('')
+    setContIngredientes(0)
+    setReceita('')
+
+    uiStore.clearFields()
+  }
+
 
   const categoriasPrincipais = [
     {
@@ -68,6 +82,14 @@ const CriarReceita = observer(props => {
     checkUser()
   }, [])
 
+  // limpando as categorias secundarias caso o usuario desmarque o pai delas
+  // useEffect(() => {
+  //   const secundarias = toJS(uiStore.categoriaSecundaria)
+  //   secundarias.map(i => {
+  //     toJS(uiStore.categoriaPrincipal.includes(i.pai) ? console.log('inclui') : console.log(i))
+  //   })
+  // }, [toJS(uiStore.categoriaPrincipal)])
+
   const checkUser = () => {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
@@ -95,7 +117,7 @@ const CriarReceita = observer(props => {
       titulo,
       ingredientes: toJS(uiStore.ingredientes),
       categoriasPrincipais: toJS(uiStore.categoriaPrincipal),
-      categoriasSecundarias: toJS(uiStore.categoriaSecundaria),
+      categoriasSecundarias: toJS(uiStore.catSecUser),
       tempo,
       custo,
       dificuldade,
@@ -103,6 +125,7 @@ const CriarReceita = observer(props => {
       uid
     };
     setReceita(newReceita)
+    console.log(newReceita)
     axios
       .post("/api/receitas/criar", newReceita, {
         // headers: {
@@ -113,6 +136,7 @@ const CriarReceita = observer(props => {
         if (res.status === 200) {
           // redireciona para pagina de receitas criadas
           console.log('funcionou!')
+          limparCampos()
           uiStore.changeConteudoAtual('Suas Receitas')
         }
       })
@@ -126,7 +150,7 @@ const CriarReceita = observer(props => {
     <div className="container">
       <p className="nome-receita">Nome da receita</p>
       <div className="input-group mb-3">
-        <input onChange={e => setTitulo(e.target.value)} type="text" className="form-control" aria-label="Text input with dropdown button" />
+        <input value={titulo} onChange={e => setTitulo(e.target.value)} type="text" className="form-control" aria-label="Text input with dropdown button" />
       </div>
 
       {/* Categorias Principais */}
@@ -142,12 +166,7 @@ const CriarReceita = observer(props => {
 
       <div className="d-flex flex-wrap justify-content-center my-5">
         {
-          ingr.map(i => {
-            const cp = uiStore.categoriaPrincipal
-            if (cp.includes(i.pai)) {
-              return <CategoriaSecundaria key={i.nome} categoria={i} />
-            }
-          })
+          toJS(uiStore.categoriaSecundaria).map((cs, i) => <CategoriaSecundaria key={i} categoria={cs} />)
         }
       </div>
 
@@ -203,7 +222,7 @@ const CriarReceita = observer(props => {
       {/* botao enviar */}
       <div className="row my-4">
         <div className="col-1 offset-10">
-          <button className="btn btn-danger">Cancelar</button>
+          <button className="btn btn-danger" onClick={() => limparCampos()}>Cancelar</button>
         </div>
         <div className="col-1">
           <button onClick={() => onHandleSubmit()} className="btn btn-success">
