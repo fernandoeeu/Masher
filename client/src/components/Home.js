@@ -14,14 +14,10 @@
 */
 
 import React, { Component } from "react";
-import { NavLink } from "react-router-dom";
 import axios from "axios";
 
 import firebase from "firebase";
 
-import Receitas from "./receitas/Receitas";
-import Msg from "../components/messages/Mensagem";
-import UserAcaoRapida from "../components/user/UserAcaoRapida";
 import Sidebar from "./sidebar/Sidebar";
 
 import "./Home.scss";

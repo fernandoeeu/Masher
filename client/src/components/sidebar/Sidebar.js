@@ -46,7 +46,8 @@ const Sidebar = observer(({ location }) => {
   const sair = () => {
     firebase.auth().signOut()
     console.log('saiu')
-    return <Redirect to={{ pathname: "/home", from: location }} />;
+    localStorage.clear()
+    return <Redirect to={{ pathname: "/", from: location }} />;
   }
 
   return (

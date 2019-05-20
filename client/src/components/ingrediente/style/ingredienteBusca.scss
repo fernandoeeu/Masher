@@ -1,0 +1,13 @@
+@import '../../../global-style/colors.scss';
+
+p {
+    margin-bottom: 5px;  
+}
+
+.ingredienteBusca {
+    background-color: $gray1;
+    color: $black;
+    padding: 0 10px;
+    margin-right: 5px;
+    border-radius: 21.5px;
+}

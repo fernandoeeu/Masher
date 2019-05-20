@@ -24,25 +24,23 @@ router.post("/receitas", async (req, res) => {
   let queryF = ''
   // { $and: [{ "ingredientes": { $regex: 'sa' } }, { "ingredientes": { $regex: 'cc' } }] }
   const query = req.body
-
   // console.log('body', req.body)
   query.map(i => {
-    ingQ.push(`{"ingredientes": {"$regex": "${i}"} }`)
+    ingQ.push(`{"ingredientes": {$regex: '${i}'} }`)
   })
-  queryF = `{"$and": [ ${ingQ} ]}`
-  // console.log(queryF)
-  queryF = JSON.parse(queryF)
-  if (query.length > 0) {
-    try {
-      const receitas = await Receita.find(queryF)
-      // .limit(20)
-      // .sort({ id: 1 });
-      console.log(receitas.length)
-      return res.json(receitas);
-    } catch (err) {
-      console.log(err)
-      return res.status(400).send({ error: "Query Failed..." });
-    }
+  queryF = `[ ${ingQ} ]`
+  console.log({
+    $and: queryF
+  })
+  try {
+    const receitas = await Receita.find(queryF)
+      .limit(20)
+      .sort({ id: 1 });
+    console.log(receitas)
+    return res.json(receitas);
+  } catch (err) {
+    console.log(err)
+    return res.status(400).send({ error: "Query Failed..." });
   }
 });
 
@@ -59,7 +57,8 @@ router.get("/receitas/all", async (req, res) => {
 router.get("/receitas/busca/:id", async (req, res) => {
   try {
     const receita = await Receita.findById(req.params.id);
-    return res.status(200).send(receita);
+
+    return res.json(receita);
   } catch (err) {
     return res.status(400).send({ error: "Receita não encontrada..." });
   }
