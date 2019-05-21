@@ -61,6 +61,7 @@ class Signin extends Component {
       .signInWithPopup(this.provider)
       .then(res => {
         localStorage.setItem("user", JSON.stringify(res.user));
+        document.cookie = "hasUser = true";
         return this.props.history.push({
           pathname: "/home",
           state: { status: 200 },

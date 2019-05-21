@@ -6,6 +6,7 @@ import Inicio from "../inicio/Inicio";
 import Busca from '../busca/Busca'
 import UserReceitas from "../user/UserReceitas";
 import CriarReceitas from "../receitas/CriarReceita";
+import EditarReceita from '../receitas/EditarReceita';
 import EmDestaque from "../inicio/emDestaque/EmDestaque";
 import Favoritos from "../inicio/favoritos/Favoritos";
 import Notificacoes from "../user/Notificacoes";
@@ -104,6 +105,8 @@ const MainContentController = observer(() => {
         return <EditarPerfil />;
       case "Busca Inteligente":
         return <Busca />;
+      case "Editar Receita":
+        return <EditarReceita />;
       default:
         return <EmDestaque />;
     }

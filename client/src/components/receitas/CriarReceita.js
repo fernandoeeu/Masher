@@ -94,8 +94,6 @@ const CriarReceita = observer(props => {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
         setUid(user.uid)
-      } else {
-        console.log('not signed in')
       }
     })
   }

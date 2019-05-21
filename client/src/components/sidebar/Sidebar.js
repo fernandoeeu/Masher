@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Redirect } from "react-router-dom";
+import { Redirect, NavLink } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import { UiStoreContext } from "../../stores/UiStore.js";
 import firebase from 'firebase'
@@ -13,41 +13,44 @@ const Sidebar = observer(({ location }) => {
     {
       id: 0,
       nome: "Início",
-      conteudo: "Em Destaque"
+      conteudo: "Em Destaque",
+      auth: false
     },
     {
       id: 1,
       nome: "Busca",
-      conteudo: "Busca Inteligente"
+      conteudo: "Busca Inteligente",
+      auth: false
     },
     {
       id: 2,
       nome: "Dashboard",
-      conteudo: "Suas Receitas"
+      conteudo: "Suas Receitas",
+      auth: true
     },
     {
       id: 3,
       nome: "Perfil",
-      conteudo: "Visão Geral"
+      conteudo: "Visão Geral",
+      auth: true
     }
   ];
-  const [compAtual, setCompAtual] = useState("Início");
-  const changeComponent = nome => {
-    console.log(nome);
-    setCompAtual(nome);
-  };
-
 
   const clickHandler = (conteudo, nome) => {
     uiStore.changeConteudoAtual(conteudo);
     uiStore.changeSideMenuActiveItem(nome);
   };
 
+  const gotoSignin = () => {
+    return <Redirect to='/signin' />
+  }
+
   const sair = () => {
     firebase.auth().signOut()
-    console.log('saiu')
+    document.cookie = "hasUser=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     localStorage.clear()
-    return <Redirect to={{ pathname: "/", from: location }} />;
+    uiStore.changeConteudoAtual('Em Destaque');
+    uiStore.changeSideMenuActiveItem('Início');
   }
 
   return (
@@ -59,21 +62,46 @@ const Sidebar = observer(({ location }) => {
               <h2>Masher</h2>
             </div>
             <div className="row flex-column">
-              {opcoes.map(opcao => (
-                <div
-                  className={
-                    "sidebar-item pl-4 " +
-                    (uiStore.sideMenuActiveItem === opcao.nome
-                      ? "sidebar-item-active"
-                      : "")
-                  }
-                  key={opcao.id}
-                  onClick={() => clickHandler(opcao.conteudo, opcao.nome)}
-                >
-                  {opcao.nome}
-                </div>
+              {opcoes.map((opcao, i) => (
+                opcao.auth === true ? (document.cookie ?
+                  <div
+                    className={
+                      "sidebar-item pl-4 " +
+                      (uiStore.sideMenuActiveItem === opcao.nome
+                        ? "sidebar-item-active"
+                        : "")
+                    }
+                    key={opcao.id}
+                    onClick={() => clickHandler(opcao.conteudo, opcao.nome)}
+                  >
+                    {opcao.nome}
+                  </div> :
+                  null
+                ) :
+                  <div
+                    className={
+                      "sidebar-item pl-4 " +
+                      (uiStore.sideMenuActiveItem === opcao.nome
+                        ? "sidebar-item-active"
+                        : "")
+                    }
+                    key={opcao.id}
+                    onClick={() => clickHandler(opcao.conteudo, opcao.nome)}
+                  >
+                    {opcao.nome}
+                  </div>
+
               ))}
-              <div onClick={() => sair()} className="btn btn-default">Sair!</div>
+              {
+                document.cookie ?
+                  <NavLink to="/home" onClick={() => sair()} className="sidebar-item pl-4 remove-navlink">
+                    Sair
+                  </NavLink> :
+                  <NavLink to="/signin" className="sidebar-item pl-4 remove-navlink">
+                    Entrar
+                  </NavLink>
+
+              }
             </div>
           </div>
         </div>
@@ -84,7 +112,3 @@ const Sidebar = observer(({ location }) => {
 });
 
 export default Sidebar;
-
-{
-  /* () => changeComponent(opcao.nome) */
-}
