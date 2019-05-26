@@ -17,7 +17,7 @@ const Ingrediente = observer(({ ingrediente }) => {
 
     return (
         <div className="ingrediente mx-2" onClick={() => toggleCIng(ingrediente)}>
-            <p className="p-3">{ingrediente.nome}</p>
+            <p className="p-3">{ingrediente}</p>
         </div>
     )
 })

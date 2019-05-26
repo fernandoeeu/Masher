@@ -3,3 +3,27 @@
   padding: 5px;
   text-align: center;
 }
+
+.wrapper {
+  width: 100vh;
+  display: grid;
+  grid-template-columns:repeat(3, 1fr);
+}
+
+.grid-item-first {
+  grid-column: 1 / -1;
+}
+
+.ing-table {
+  background-color: #E7E7E7;
+  padding: 10px;
+  border-radius: 13px;
+  margin-top: 10px;
+}
+
+@media (min-width: 500px) {
+  .modal-xl {
+    width: 90%;
+    max-width:1200px;
+  }
+}

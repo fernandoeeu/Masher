@@ -13,16 +13,23 @@ const ReceitaSchema = new mongoose.Schema({
     type: [String],
     required: true
   },
-  ingredientesQtd: {
+  ingredientesLower: {
     type: [String],
     required: true
   },
   categoriasPrincipais: {
-    type: [String],
+    type: [{
+      id: Number,
+      nome: String
+    }],
     required: true
   },
   categoriasSecundarias: {
-    type: [String],
+    type: [{
+      id: Number,
+      nome: String,
+      pai: Number
+    }],
     required: true
   },
   tempo: {

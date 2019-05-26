@@ -5,6 +5,9 @@ import { UiStoreContext } from "../../stores/UiStore.js";
 import axios from "axios";
 import firebase from "firebase";
 
+
+import { categoriasPrincipais, categoriasSecundarias } from '../categorias/categoriasData'
+
 import CategoriaPrincipal from '../categorias/CategoriaPrincipal'
 import CategoriaSecundaria from '../categorias/CategoriaSecundaria'
 import Ingrediente from '../ingrediente/Ingrediente'
@@ -24,9 +27,29 @@ const CriarReceita = observer(props => {
   const [dificuldade, setDificuldade] = useState('')
   const [passos, setPassos] = useState('')
   const [titulo, setTitulo] = useState('');
-  const [contIngredientes, setContIngredientes] = useState(0)
   const [receita, setReceita] = useState({})
   const [uid, setUid] = useState()
+
+  useEffect(() => {
+    if (props.receitaEditar) {
+      const { receitaEditar } = props
+      const { custo, dificuldade, nome, passos, tempo } = receitaEditar
+      //ingredientes
+      receitaEditar.ingredientes.map(ing => uiStore.addIngredientes(ing))
+      // categorias
+      uiStore.replaceCategoriaPrincipal(receitaEditar.categoriasPrincipais)
+      uiStore.replaceCategoriaSeundaria(receitaEditar.categoriasSecundarias)
+      setTitulo(nome)
+      setCusto(custo)
+      setDificuldade(dificuldade)
+      setPassos(passos)
+      setTempo(tempo)
+    } else {
+      uiStore.clearFields()
+    }
+
+
+  }, [])
 
   const limparCampos = () => {
     setIng('')
@@ -36,59 +59,17 @@ const CriarReceita = observer(props => {
     setDificuldade('')
     setPassos('')
     setTitulo('')
-    setContIngredientes(0)
     setReceita('')
 
     uiStore.clearFields()
   }
 
 
-  const categoriasPrincipais = [
-    {
-      id: 0,
-      nome: 'Bebidas',
-      sub: ['Drinks', 'Chás', 'Vitaminas', 'Cafés', 'Sucos']
-    },
-    {
-      id: 1,
-      nome: 'Tradicional',
-      sub: ['Carnes', 'Aves', 'Peixes e Frutos do Mar', 'Sopas', 'Massas', 'Pratos Típicos Brasileiros', 'Pratos Estrangeiros', 'Ovos e Laticínios']
-    },
-    {
-      id: 2,
-      nome: 'Acompanhamentos',
-      sub: ['Saladas', 'Molhos', 'Aperitivos']
-    },
-    {
-      id: 3,
-      nome: 'Lanches',
-      sub: ['Bolos e Tortas', 'Doces e Sobremesas', 'Salgados', 'Pães']
-    },
-    {
-      id: 4,
-      nome: 'Saudavel',
-      sub: ['Light', 'Vegetariano', 'Sem Lactose', 'Sem Glúten', 'Grãos']
 
-    },
-    {
-      id: 5,
-      nome: 'Especiais',
-      sub: ['Páscoa', 'Aniversários', 'Festa Junina', 'Natal e Ano Novo', 'Confeitaria']
-    },
-
-  ]
 
   useEffect(() => {
     checkUser()
   }, [])
-
-  // limpando as categorias secundarias caso o usuario desmarque o pai delas
-  // useEffect(() => {
-  //   const secundarias = toJS(uiStore.categoriaSecundaria)
-  //   secundarias.map(i => {
-  //     toJS(uiStore.categoriaPrincipal.includes(i.pai) ? console.log('inclui') : console.log(i))
-  //   })
-  // }, [toJS(uiStore.categoriaPrincipal)])
 
   const checkUser = () => {
     firebase.auth().onAuthStateChanged(user => {
@@ -99,23 +80,22 @@ const CriarReceita = observer(props => {
   }
 
   const addIngredientes = () => {
-    const tmpIng = {
-      nome: ing,
-      qtd: qtd
-    }
+    const tmpIng = ing + ' - ' + qtd
+
     //setIngredientes([...ingredientes, tmpIng])
     uiStore.addIngredientes(tmpIng)
     setIng('')
     setQtd('')
-    setContIngredientes(contIngredientes + 1)
   }
+
+
 
   const onHandleSubmit = async () => {
     const newReceita = {
       titulo,
       ingredientes: toJS(uiStore.ingredientes),
       categoriasPrincipais: toJS(uiStore.categoriaPrincipal),
-      categoriasSecundarias: toJS(uiStore.catSecUser),
+      categoriasSecundarias: toJS(uiStore.categoriaSecundaria),
       tempo,
       custo,
       dificuldade,
@@ -123,36 +103,62 @@ const CriarReceita = observer(props => {
       uid
     };
     setReceita(newReceita)
-    console.log(newReceita)
-    axios
-      .post("/api/receitas/criar", newReceita, {
-        // headers: {
-        //   "x-auth-token": this.state.userToken
-        // }
-      })
-      .then(res => {
-        if (res.status === 200) {
-          // redireciona para pagina de receitas criadas
-          console.log('funcionou!')
-          limparCampos()
-          uiStore.changeConteudoAtual('Suas Receitas')
-        }
-      })
-      .catch(err => console.log("erro", err));
+    //console.log(newReceita)
+    if (props.receitaEditar) {
+      console.log('editar!!')
+      axios.post(`api/receitas/atualizar`, newReceita)
+        .then(res => {
+          if (res.status === 200) {
+            console.log('atualizou com sucesso!')
+            limparCampos()
+            uiStore.changeConteudoAtual('Suas Receitas')
+            props.closeModal()
+          } else {
+            console.log('n sei oq houve')
+          }
+
+        })
+        .catch(err => console.log("erro ao atualizar", err));
+    } else {
+
+      axios
+        .post("/api/receitas/criar", newReceita, {
+          // headers: {
+          //   "x-auth-token": this.state.userToken
+          // }
+        })
+        .then(res => {
+          if (res.status === 200) {
+            // redireciona para pagina de receitas criadas
+            console.log('funcionou!')
+            limparCampos()
+            uiStore.changeConteudoAtual('Suas Receitas')
+
+          }
+        })
+        .catch(err => console.log("erro", err));
+    }
   };
 
-  // set up editor passo a passo
+  const checkFields = () => {
+    if (uiStore.ingredientes.length > 0 && passos.length > 0 && titulo.length > 0 && uiStore.categoriaPrincipal.length > 0 && uiStore.categoriaSecundaria.length > 0) {
+      return true
+    } else {
+      return false
+    }
+
+  }
 
 
   return (
     <div className="container">
-      <p className="nome-receita">Nome da receita</p>
+      <p className="nome-receita">Nome da receita <span className="obrigatorio">*</span></p>
       <div className="input-group mb-3">
         <input value={titulo} onChange={e => setTitulo(e.target.value)} type="text" className="form-control" aria-label="Text input with dropdown button" />
       </div>
 
       {/* Categorias Principais */}
-      <p className="categorias-principais">Categorias Principais</p>
+      <p className="categorias-principais">Categorias Principais <span className="obrigatorio">*</span></p>
       <div className="d-flex flex-wrap">
         {
           categoriasPrincipais.map(categoria => <CategoriaPrincipal key={categoria.id} categoria={categoria} />)
@@ -160,16 +166,17 @@ const CriarReceita = observer(props => {
       </div>
 
       {/* Categorias secundárias */}
-      <p className="categorias-secundarias">Categorias Secundárias</p>
+      <p className="categorias-secundarias">Categorias Secundárias <span className="obrigatorio">*</span></p>
 
       <div className="d-flex flex-wrap justify-content-center my-5">
         {
-          toJS(uiStore.categoriaSecundaria).map((cs, i) => <CategoriaSecundaria key={i} categoria={cs} />)
+          // toJS(uiStore.categoriaSecundaria).map((cs, i) => <CategoriaSecundaria key={i} categoria={cs} />)
+          categoriasSecundarias.map(cat => <CategoriaSecundaria key={cat.id} categoria={cat} />)
         }
       </div>
 
       {/* Ingredientes */}
-      <p className="ingredientes">Ingrediente - Quantidade</p>
+      <p className="ingredientes">Ingrediente - Quantidade <span className="obrigatorio">*</span></p>
       <p className="label-ingredientes"> Clique para excluir</p>
       <div className="row my-2">
         <div className="col-5">
@@ -179,7 +186,7 @@ const CriarReceita = observer(props => {
           <input placeholder="100 gramas..." value={qtd} onChange={e => setQtd(e.target.value)} type="text" className="form-control" name="qtd" id="" />
         </div>
         <div className="col-2">
-          <button onClick={() => addIngredientes()} className="btn btn-default">Adicionar</button>
+          <button disabled={ing.length > 0 && qtd.length > 0 ? false : true} onClick={() => addIngredientes()} className="btn btn-default">Adicionar</button>
         </div>
       </div>
       <div className="row mx-2 my-2">
@@ -192,7 +199,7 @@ const CriarReceita = observer(props => {
       </div>
 
       {/* passo a passo */}
-      <p className="passo-a-passo">Passo a passo</p>
+      <p className="passo-a-passo">Passo a passo <span className="obrigatorio">*</span></p>
       <div className="input-group mb-3">
         <textarea placeholder="explique o processo detalhadamente..." id="passosapasso" value={passos} onChange={e => setPassos(e.target.value)} type="text" className="form-control" aria-label="Text input with dropdown button" />
       </div>
@@ -218,16 +225,29 @@ const CriarReceita = observer(props => {
       </div>
 
       {/* botao enviar */}
-      <div className="row my-4">
-        <div className="col-1 offset-10">
-          <button className="btn btn-danger" onClick={() => limparCampos()}>Cancelar</button>
-        </div>
-        <div className="col-1">
-          <button onClick={() => onHandleSubmit()} className="btn btn-success">
-            Criar
-          </button>
-        </div>
-      </div>
+      {
+        props.receitaEditar ?
+          <div className="row my-4">
+            <div className="btn-group btn-group-toggle" data-toggle="buttons">
+              <div onClick={() => limparCampos()} data-dismiss="modal" className="btn btn-light float-right">Cancelar</div>
+              <div onClick={() => onHandleSubmit()} className="btn btn-success float-right">Salvar</div>
+            </div>
+          </div>
+          :
+          <div className="row my-4">
+            <div className="btn-group btn-group-toggle" data-toggle="buttons">
+              <div onClick={() => limparCampos()} className="btn btn-light float-right">Limpar campos</div>
+              <div onClick={() => onHandleSubmit()} className="btn btn-success float-right">Criar</div>
+              {
+                !checkFields() ?
+                  <p className="alerta-campos ml-2 mt-2">Preencha todos os campos!</p> :
+                  null
+
+              }
+            </div>
+          </div>
+
+      }
 
     </div>
   );

@@ -5,7 +5,9 @@ import firebase from "firebase";
 import axios from "axios";
 import { observer } from "mobx-react-lite";
 import { UiStoreContext } from "../../stores/UiStore.js";
+import $ from 'jquery';
 
+import CriarReceita from '../receitas/CriarReceita'
 
 import "./userReceitas.scss";
 
@@ -15,6 +17,7 @@ const UserReceitas = observer(props => {
   const [userReceitas, setUserReceitas] = useState([]);
   const [open, setOpen] = useState(false);
   const [receitaModal, setReceitaModal] = useState(null);
+  const [isEdit, setIsEdit] = useState(false)
 
   const fetchUserReceitas = uid => {
     axios
@@ -40,56 +43,108 @@ const UserReceitas = observer(props => {
   }
 
   const handleClickReceita = async id => {
+    setReceitaModal(null)
     console.log(id)
     try {
       const receita = await axios.get(`/api/receitas/busca/${id}`)
       if (receita) {
-        setOpen(true)
         setReceitaModal(receita.data)
-
+        console.log(receita.data)
       }
     } catch (err) {
       console.log(err)
     }
   }
 
-  const editarReceita = () => {
-    uiStore.changeConteudoAtual('Editar Receita');
+  const handleClick = () => {
+    setIsEdit(false)
+    uiStore.clearFields()
   }
+  const closeModal = () => {
+    $("#btn-sair").trigger("click");
+  }
+  const btnStyle = {
+    display: 'none'
+  }
+
+  $('#modal-receita').on("hidden.bs.modal", function () {
+    alert("clesn up!")
+  })
+
 
   return (
     <div className="container">
       <div className="d-flex flex-wrap justify-content-center my-5">
         {userReceitas
           ? userReceitas.map(receita => (
-            <div key={receita._id} onClick={() => handleClickReceita(receita._id)}>
+            <div key={receita._id} onClick={() => handleClickReceita(receita._id)} data-toggle="modal" data-target=".bd-example-modal-xl">
               <UserReceita receita={receita} />
             </div>
           ))
           : null}
-        <Modal open={open} onClose={() => setOpen(false)}>
-          {
-            receitaModal ?
-              <div className="row receita-modal">
-                <div className="col-sm-12"><h3>{receitaModal.nome}</h3></div>
-                <h5>Ingredientes</h5>
-                <div className="col-sm-12">
-                  <ul>
-                    {
-                      receitaModal.ingredientes.map((ing, i) => <li key={i}>{ing}</li>)
-                    }
-                  </ul>
-                </div>
-                <h5>Passo a passo</h5>
-                <div className="col-sm-12">
-                  <p>{receitaModal.passos}</p>
-                </div>
-                <button onClick={() => editarReceita()} className="btn btn-default">Editar</button>
+
+        <div id="modal-receita" className="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+          <div className="modal-dialog modal-lg">
+            <div className="modal-content">
+              <div className="container-fluid">
+                <div className="row my-2">
+                  <div className="btn-group btn-group-toggle mx-auto" data-toggle="buttons">
+                    <div onClick={() => handleClick()} className="btn btn-primary">Visualizar</div>
+                    <div onClick={() => setIsEdit(true)} className="btn btn-primary">Editar</div>
+                  </div>
+                </div> {/* fim row switch edicao */}
+
+                {
+                  isEdit === false ?
+                    receitaModal ?
+                      <div className="row my-2">
+                        <div className="col-12">
+                          <h2 className="text-center font-weight-bold">{receitaModal.nome}</h2>
+                        </div>
+
+                        <div className="col-6">
+                          <h3 className="text-center">Ingredientes</h3>
+                          <div className="col-12 ing-table my-4">
+                            <ul>
+                              {
+                                receitaModal.ingredientes.map(ing => <li>{ing}</li>)
+                              }
+                            </ul>
+                          </div>
+                        </div>
+                        <div className="col-6">
+                          <h3 className="text-center">Detalhes</h3>
+                          <div className="col-12 ing-table my-4">
+                            <ul>
+                              <li>Demora em média {receitaModal.tempo} minutos</li>
+                              <li>Custa aproximadamente R$ {receitaModal.custo}</li>
+                              <li>Nível de dificuldade </li>
+                            </ul>
+                          </div>
+                        </div>
+
+                        <div className="col-12">
+                          <h3 className="text-center">Passos</h3>
+                          <div className="col-11 ing-table my-4 mx-auto">
+                            <h5 className="text-left p-2">
+                              {receitaModal.passos}
+                            </h5>
+                          </div>
+                        </div>
+                      </div> : null
+                    :
+                    receitaModal ?
+                      <div className="row my-2">
+                        <CriarReceita receitaEditar={receitaModal} closeModal={() => closeModal()} />
+                        <div id="btn-sair" style={btnStyle} data-dismiss="modal" className="btn btn-light float-right">Cancelar</div>
+                      </div> :
+                      null
+                }
+
               </div>
-              :
-              null
-          }
-        </Modal>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

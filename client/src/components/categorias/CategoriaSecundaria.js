@@ -13,10 +13,15 @@ const Categoria = observer(({ categoria }) => {
         setIsAdd(!isAdd)
     }
     return (
-        <div className={"categoria-secundaria m-2" + (uiStore.catSecUser.includes(categoria) ? ' categoria-secundaria-active' : '')} onClick={() => handleClick()}>
-            <p className="px-2 py-auto">{categoria}</p>
-        </div>
+        uiStore.checkIfCatPaiIsActive(categoria) ?
+            <div onClick={() => uiStore.changeCategoriaSecundaria(categoria)} className={"categoria-secundaria m-2" + (uiStore.checkIfAddCategoriaSecundaria(categoria.id) ? ' categoria-secundaria-active' : '')}>
+                <p className="px-2 py-auto">{categoria.nome}</p>
+            </div> :
+            null
     )
 })
 
 export default Categoria
+
+
+// + (uiStore.catSecUser.includes(categoria) } onClick={() => handleClick()}

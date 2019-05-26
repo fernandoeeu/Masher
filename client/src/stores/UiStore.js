@@ -9,6 +9,8 @@ import {
 } from "mobx";
 import { createContext } from "react";
 
+import { categoriasPrincipais } from '../components/categorias/categoriasData'
+
 class UiStore {
   sideMenuActiveItem = "Início";
   conteudoAtual = "Em Destaque";
@@ -26,33 +28,38 @@ class UiStore {
   changeConteudoAtual = nome => {
     this.conteudoAtual = nome;
   };
-  changeCategoriaPrincipal = categoria => {
-    if (this.checkIfAddCategoriaPrincipal(categoria) == 0) {
-      this.addCategoriaPrincipal(categoria)
-      categoria.sub.map(cat => this.addCategoriaSecundaria(cat))
+  changeCategoriaPrincipal = id => {
+    if (this.checkIfAddCategoriaPrincipal(id)) {
+      this.removeCategoriaPrincipal(id)
     } else {
-      this.removeCategoriaPrincipal(categoria)
-      categoria.sub.map(cat => this.removeCategoriaSecundaria(cat))
-      categoria.sub.map(cat => {
-        if (this.catSecUser.includes(cat)) {
-          this.removeCatSecUser(cat)
-        }
-      })
+      this.addCategoriaPrincipal(id)
     }
   }
 
-  addCategoriaPrincipal = categoria => {
-    this.categoriaPrincipal.push(categoria)
+  addCategoriaPrincipal = id => {
+    let aux = {}
+    categoriasPrincipais.some(cat => {
+      if (cat.id === id) {
+        aux = cat
+      }
+    })
+    this.categoriaPrincipal.push(aux)
   }
-  removeCategoriaPrincipal = categoria => {
-    this.categoriaPrincipal = this.categoriaPrincipal.filter(cp => cp.nome !== categoria.nome)
+  removeCategoriaPrincipal = id => {
+    this.categoriaPrincipal = this.categoriaPrincipal.filter(cp => cp.id !== id)
   }
 
   changeCategoriaSecundaria = categoria => {
-    if (!this.categoriaSecundaria.includes(categoria.nome) && this.categoriaPrincipal.includes(categoria.pai)) {
-      this.addCategoriaSecundaria(categoria.nome)
+    // if (!this.checkIfAddCategoriaSecundaria && this.checkIfAddCategoriaPrincipal(categoria.pai)) {
+    //   this.addCategoriaSecundaria(categoria)
+    // } else {
+    //   console.log('deveria remover')
+    //   this.removeCategoriaSecundaria(categoria.nome)
+    // }
+    if (!this.checkIfAddCategoriaSecundaria(categoria.id)) {
+      this.addCategoriaSecundaria(categoria)
     } else {
-      this.removeCategoriaSecundaria(categoria.nome)
+      this.removeCategoriaSecundaria(categoria.id)
     }
   }
 
@@ -60,35 +67,42 @@ class UiStore {
     this.categoriaSecundaria.push(categoria)
   }
 
-  removeCategoriaSecundaria = nome => {
-    this.categoriaSecundaria.splice(this.categoriaSecundaria.findIndex(e => e === nome), 1)
+  removeCategoriaSecundaria = id => {
+    this.categoriaSecundaria = this.categoriaSecundaria.filter(cp => cp.id !== id)
   }
 
-  addCatSecUser = categoria => {
-    this.catSecUser.push(categoria)
-  }
-  removeCatSecUser = categoria => {
-    this.catSecUser.splice(this.catSecUser.findIndex(e => e === categoria), 1)
-  }
-  changeCatSecUser = categoria => {
-    if (this.catSecUser.includes(categoria)) {
-      this.removeCatSecUser(categoria)
+  replaceCategoriaSeundaria = newArr => this.categoriaSecundaria = newArr
+  replaceCategoriaPrincipal = newArr => this.categoriaPrincipal = newArr
+
+  checkIfCatPaiIsActive = filha => {
+    if (this.categoriaPrincipal.some(cat => cat.id === filha.pai)) {
+      return true
     } else {
-      this.addCatSecUser(categoria)
+      if (this.categoriaSecundaria.some(cat => cat.id === filha.id)) {
+        this.removeCategoriaSecundaria(filha.id)
+      }
+      return false
     }
   }
-  checkIfAddedCatSecUser = categoria => {
 
-  }
-  checkIfAddCategoriaPrincipal = (categoria) => {
-    let aux = 0;
-    if (this.categoriaPrincipal.length > 0) {
-      this.categoriaPrincipal.map(cp => cp.id === categoria.id ? aux++ : null)
+  checkIfAddCategoriaPrincipal = id => {
+    if (this.categoriaPrincipal.some(c => c.id === id)) {
+      return true
+    } else {
+      return false
     }
-    return aux
+  }
+  checkIfAddCategoriaSecundaria = id => {
+    if (this.categoriaSecundaria.some(c => c.id === id)) {
+      return true
+    } else {
+      return false
+    }
   }
 
-
+  replaceIngredientes = ing => {
+    this.ingredientes = ing
+  }
   addIngredientes = ing => {
     this.ingredientes.push(ing)
   }

@@ -27,10 +27,10 @@ router.post("/receitas", async (req, res) => {
 
   // console.log('body', req.body)
   query.map(i => {
-    ingQ.push(`{"ingredientes": {"$regex": "${i}"} }`)
+    ingQ.push(`{"ingredientesLower": {"$regex": "${i.toLowerCase()}"} }`)
   })
   queryF = `{"$and": [ ${ingQ} ]}`
-  // console.log(queryF)
+  console.log(queryF)
   queryF = JSON.parse(queryF)
   if (query.length > 0) {
     try {
@@ -75,17 +75,32 @@ router.post("/receitas/busca/:uid", async (req, res) => {
   }
 });
 
-router.post("/receitas/atualizar/:rid", (req, res) => {
+router.post("/receitas/atualizar", async (req, res) => {
   try {
-    // const res = await req.body
-    return res.json(req.body)
-    // const receitaAtualizada = await Receita.updateOne(
-    //   { _id: req.body.rid},
-    //   {
-
-    //   }
-    // )
+    const { ingredientes, titulo, categoriasPrincipais, categoriasSecundarias, tempo, custo, dificuldade, passos, _id } = req.body
+    await Receita.findOneAndUpdate(
+      _id,
+      {
+        ingredientes,
+        nome: titulo,
+        categoriasPrincipais,
+        categoriasSecundarias,
+        custo,
+        tempo,
+        dificuldade,
+        passos
+      },
+      (err, receita) => {
+        if (err) {
+          console.log('err: ', err)
+          return res.status(400)
+        }
+        console.log(receita)
+        res.send({ msg: 'ok' })
+      }
+    )
   } catch (err) {
+    console.log(err)
     return res.status(400).send({ error: "receita não encontrado" })
   }
 })
@@ -93,28 +108,13 @@ router.post("/receitas/atualizar/:rid", (req, res) => {
 
 router.post("/receitas/criar", async (req, res) => {
   let { titulo, categoriasPrincipais, categoriasSecundarias, custo, dificuldade, passos, tempo, ingredientes, uid } = req.body;
-  // console.log(req.body)
-  // try {
-  //   categoriasPrincipais = categoriasPrincipais.map(categoria => categoria.trim());
-  //   categoriasSecundarias = categoriasSecundarias.map(categoria => categoria.trim());
-  //   ingredientes = ingredientes.map(ingrediente => ingrediente.trim());
-  // } catch (e) {
-  //   return res.status(400).send({ error: "Por favor, entre com os ingredientes e categorias" })
-  // }
-  let cpf = []
-  let iqtd = []
-  let inome = []
-  categoriasPrincipais.map(cp => cpf.push(cp.nome))
-  ingredientes.map(ing => {
-    iqtd.push(ing.qtd)
-    inome.push(ing.nome)
-  })
-
   let receita = new Receita()
   receita.nome = titulo
-  receita.ingredientes = inome
-  receita.ingredientesQtd = iqtd
-  receita.categoriasPrincipais = cpf
+  receita.ingredientes = ingredientes
+  let ingL = []
+  ingredientes.map(i => ingL.push(i.toLowerCase()))
+  receita.ingredientesLower = ingL
+  receita.categoriasPrincipais = categoriasPrincipais
   receita.categoriasSecundarias = categoriasSecundarias
   receita.createdBy = uid
   custo.length > 0 ? receita.custo = custo : null

@@ -11,10 +11,10 @@ const Categoria = observer(({ categoria }) => {
 
 
   const toggleCat = () => {
-    uiStore.changeCategoriaPrincipal(categoria)
+    uiStore.changeCategoriaPrincipal(categoria.id)
   }
   return (
-    <div className={"categoria-principal d-flex m-2" + (uiStore.checkIfAddCategoriaPrincipal(categoria) > 0 ? ' categoria-principal-active' : '')} onClick={() => toggleCat()}>
+    <div className={"categoria-principal d-flex m-2" + (uiStore.checkIfAddCategoriaPrincipal(categoria.id) ? ' categoria-principal-active' : '')} onClick={() => toggleCat()}>
       <p className="">{nome}</p>
     </div>
   )
