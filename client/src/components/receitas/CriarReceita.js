@@ -90,7 +90,6 @@ const CriarReceita = observer(props => {
   }
 
   const updateReceita = async () => {
-    console.log('atualizando...')
     const newReceita = {
       titulo,
       ingredientes: toJS(uiStore.ingredientes),
@@ -108,8 +107,6 @@ const CriarReceita = observer(props => {
     axios.post(`api/receitas/atualizar`, newReceita).
       then(res => {
         props.closeModal()
-        console.log('res: ', res.status)
-        console.log('atualizou com sucesso!')
         limparCampos()
         uiStore.changeConteudoAtual('Criar Receita')
         uiStore.changeConteudoAtual('Suas Receitas')
