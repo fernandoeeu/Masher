@@ -6,19 +6,6 @@ const auth = require("../middleware/auth");
 
 const router = express.Router();
 
-/*
-  
-*/
-// router.post("/receitas", async (req, res) => {
-//   try {
-//     //const receita = await Receita.create(req.body);
-
-//     return res.send({ a: 'a' });
-//   } catch (err) {
-//     return res.status(400).send({ error: "Query failed..." });
-//   }
-// });
-
 router.post("/receitas", async (req, res) => {
   let ingQ = []
   let queryF = ''
@@ -30,7 +17,6 @@ router.post("/receitas", async (req, res) => {
     ingQ.push(`{"ingredientesLower": {"$regex": "${i.toLowerCase()}"} }`)
   })
   queryF = `{"$and": [ ${ingQ} ]}`
-  console.log(queryF)
   queryF = JSON.parse(queryF)
   if (query.length > 0) {
     try {
@@ -78,27 +64,24 @@ router.post("/receitas/busca/:uid", async (req, res) => {
 router.post("/receitas/atualizar", async (req, res) => {
   try {
     const { ingredientes, titulo, categoriasPrincipais, categoriasSecundarias, tempo, custo, dificuldade, passos, _id } = req.body
-    await Receita.findOneAndUpdate(
-      _id,
-      {
-        ingredientes,
-        nome: titulo,
-        categoriasPrincipais,
-        categoriasSecundarias,
-        custo,
-        tempo,
-        dificuldade,
-        passos
-      },
-      (err, receita) => {
-        if (err) {
-          console.log('err: ', err)
-          return res.status(400)
-        }
-        console.log(receita)
-        res.send({ msg: 'ok' })
+    const doc = await Receita.findOne({ _id: _id })
+    if (doc) {
+      console.log(doc.nome)
+      doc.ingredientes = ingredientes
+      doc.nome = titulo
+      doc.categoriasPrincipais = categoriasPrincipais
+      doc.categoriasSecundarias = categoriasSecundarias
+      doc.custo = custo
+      doc.tempo = tempo
+      doc.dificuldade = dificuldade
+      doc.passos = passos
+
+      const saved = await doc.save()
+      if (saved === doc) {
+        return res.status(200).send({ msg: 'atualizado!!!' })
       }
-    )
+    }
+    return res.status(200).send({ msg: 'ok' })
   } catch (err) {
     console.log(err)
     return res.status(400).send({ error: "receita não encontrado" })

@@ -31,6 +31,7 @@ const CriarReceita = observer(props => {
   const [uid, setUid] = useState()
 
   useEffect(() => {
+    // console.log('receita para editar: ', props.receitaEditar._id)
     if (props.receitaEditar) {
       const { receitaEditar } = props
       const { custo, dificuldade, nome, passos, tempo } = receitaEditar

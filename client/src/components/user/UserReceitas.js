@@ -49,12 +49,15 @@ const UserReceitas = observer(props => {
       const receita = await axios.get(`/api/receitas/busca/${id}`)
       if (receita) {
         setReceitaModal(receita.data)
-        console.log(receita.data)
       }
     } catch (err) {
       console.log(err)
     }
   }
+
+  useEffect(() => {
+    console.log(receitaModal)
+  }, [receitaModal])
 
   const handleClick = () => {
     setIsEdit(false)
