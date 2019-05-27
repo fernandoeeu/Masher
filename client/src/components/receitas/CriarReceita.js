@@ -125,7 +125,6 @@ const CriarReceita = observer(props => {
       dificuldade,
       passos,
       uid,
-      _id: props.receitaEditar._id
     };
     setReceita(newReceita)
 
