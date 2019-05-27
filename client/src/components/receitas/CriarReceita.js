@@ -69,6 +69,7 @@ const CriarReceita = observer(props => {
 
   useEffect(() => {
     checkUser()
+    console.log()
   }, [])
 
   const checkUser = () => {
@@ -88,7 +89,32 @@ const CriarReceita = observer(props => {
     setQtd('')
   }
 
+  const updateReceita = async () => {
+    console.log('atualizando...')
+    const newReceita = {
+      titulo,
+      ingredientes: toJS(uiStore.ingredientes),
+      categoriasPrincipais: toJS(uiStore.categoriaPrincipal),
+      categoriasSecundarias: toJS(uiStore.categoriaSecundaria),
+      tempo,
+      custo,
+      dificuldade,
+      passos,
+      uid,
+      _id: props.receitaEditar._id
+    };
+    setReceita(newReceita)
 
+    axios.post(`api/receitas/atualizar`, newReceita).
+      then(res => {
+        props.closeModal()
+        console.log('res: ', res.status)
+        console.log('atualizou com sucesso!')
+        limparCampos()
+        uiStore.changeConteudoAtual('Criar Receita')
+        uiStore.changeConteudoAtual('Suas Receitas')
+      })
+  }
 
   const onHandleSubmit = async () => {
     const newReceita = {
@@ -100,44 +126,28 @@ const CriarReceita = observer(props => {
       custo,
       dificuldade,
       passos,
-      uid
+      uid,
+      _id: props.receitaEditar._id
     };
     setReceita(newReceita)
-    //console.log(newReceita)
-    if (props.receitaEditar) {
-      console.log('editar!!')
-      axios.post(`api/receitas/atualizar`, newReceita)
-        .then(res => {
-          if (res.status === 200) {
-            console.log('atualizou com sucesso!')
-            limparCampos()
-            uiStore.changeConteudoAtual('Suas Receitas')
-            props.closeModal()
-          } else {
-            console.log('n sei oq houve')
-          }
 
-        })
-        .catch(err => console.log("erro ao atualizar", err));
-    } else {
+    axios
+      .post("/api/receitas/criar", newReceita, {
+        // headers: {
+        //   "x-auth-token": this.state.userToken
+        // }
+      })
+      .then(res => {
+        if (res.status === 200) {
+          // redireciona para pagina de receitas criadas
+          console.log('funcionou!')
+          limparCampos()
+          uiStore.changeConteudoAtual('Suas Receitas')
 
-      axios
-        .post("/api/receitas/criar", newReceita, {
-          // headers: {
-          //   "x-auth-token": this.state.userToken
-          // }
-        })
-        .then(res => {
-          if (res.status === 200) {
-            // redireciona para pagina de receitas criadas
-            console.log('funcionou!')
-            limparCampos()
-            uiStore.changeConteudoAtual('Suas Receitas')
+        }
+      })
+      .catch(err => console.log("erro", err));
 
-          }
-        })
-        .catch(err => console.log("erro", err));
-    }
   };
 
   const checkFields = () => {
@@ -230,7 +240,7 @@ const CriarReceita = observer(props => {
           <div className="row my-4">
             <div className="btn-group btn-group-toggle" data-toggle="buttons">
               <div onClick={() => limparCampos()} data-dismiss="modal" className="btn btn-light float-right">Cancelar</div>
-              <div onClick={() => onHandleSubmit()} className="btn btn-success float-right">Salvar</div>
+              <div onClick={() => updateReceita()} className="btn btn-success float-right">Salvar</div>
             </div>
           </div>
           :
