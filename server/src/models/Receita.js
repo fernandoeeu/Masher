@@ -55,6 +55,9 @@ const ReceitaSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now
+  },
+  image: {
+    type: String
   }
 
 }, { collection: 'receitas_final' })

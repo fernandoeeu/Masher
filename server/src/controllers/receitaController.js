@@ -1,10 +1,38 @@
 const express = require("express");
+const cloudinary = require('cloudinary')
+const multer = require('multer')
+const path = require('path')
+
 
 const Receita = require("../models/Receita");
 
 const auth = require("../middleware/auth");
 
 const router = express.Router();
+
+const CLOUDINARY_URL = `https://api.cloudinary.com/v1_1/dnpo8spfa/upload`
+
+const CLOUDNARY_UPLOAD_PRESET = 'd1fmbyex'
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/')
+  },
+  filename: function (req, file, cb) {
+    console.log(file)
+    cb(null, file.originalname)
+  }
+});
+
+// app.post('/receitas/imagem', (req, res, next) => {
+//   const upload = multer({ storage }).single('name-of-input-key')
+//   upload(req, res, function (err) {
+//     if (err) {
+//       return res.send(err)
+//     }
+//     res.json(req.file)
+//   })
+// })
 
 router.post("/receitas", async (req, res) => {
   let ingQ = []
@@ -61,8 +89,32 @@ router.post("/receitas/busca/:uid", async (req, res) => {
   }
 });
 
+router.post("/receitas/imagem", async (req, res) => {
+  try {
+    console.log(req.body)
+    const { id, url } = req.body
+    const doc = await Receita.findOne({ _id: id })
+    if (doc) {
+      
+        doc.image = url
+        const saved = await doc.save()
+        if (saved) {
+          console.log("saved", saved)
+          console.log("atualizou")
+          return res.status(200).send({ msg: 'atualizado!!!' })
+        
+      }
+
+    }
+  } catch (e) {
+    console.log(e)
+    return res.status(400).send({ error: "Impossivel atualizar imagem da receita" })
+  }
+})
+
 router.post("/receitas/atualizar", async (req, res) => {
   try {
+    console.log(req.body)
     const { ingredientes, titulo, categoriasPrincipais, categoriasSecundarias, tempo, custo, dificuldade, passos, _id } = req.body
     const doc = await Receita.findOne({ _id: _id })
     if (doc) {
@@ -78,10 +130,9 @@ router.post("/receitas/atualizar", async (req, res) => {
 
       const saved = await doc.save()
       if (saved === doc) {
-        return res.status(200).send({ msg: 'atualizado!!!' })
+        res.status(200).send({ id: _id, url: doc.image })
       }
     }
-    return res.status(200).send({ msg: 'ok' })
   } catch (err) {
     console.log(err)
     return res.status(400).send({ error: "receita não encontrado" })
@@ -110,7 +161,7 @@ router.post("/receitas/criar", async (req, res) => {
       return res.status(400).send({ error: "receita não encontrado" })
     } else {
       console.log(receita)
-      res.send({ msg: 'ok' })
+      res.send({ id: receita._id })
     }
   })
   //res.send({ data: req.body.user.id });

@@ -1,23 +1,29 @@
 .categoria-secundaria {
+    transition: 0.3s;
     height: 50px;
-    background-color: lightgray;
+    background-color: #F45B69;
     border-radius: 10px;
     text-align: center;
     cursor: pointer;
+}
+
+.categoria-secundaria-filho {
+    line-height: 50px;
 }
 
 .categoria-secundaria p {
     font-weight: 500;
     font-size: 16px;
-    line-height: 20px;
     text-align: center;
     color: #FFFFFF;
 }
 
 .categoria-secundaria-active {
+    transition: 0.3s;
     height: 50px;
     border-radius: 10px;
     text-align: center;
     cursor: pointer;
-    background-image: linear-gradient(to right, #6B73FF, #000DFF);
+    background: #CE1F34;
+    // background-image: linear-gradient(to right, #6B73FF, #000DFF);
 }

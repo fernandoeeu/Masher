@@ -11,6 +11,8 @@ import CriarReceita from '../receitas/CriarReceita'
 
 import "./userReceitas.scss";
 
+const placeholder = [0, 1, 2, 3]
+
 const UserReceitas = observer(props => {
   const uiStore = useContext(UiStoreContext);
 
@@ -34,6 +36,10 @@ const UserReceitas = observer(props => {
 
   }, []);
 
+  useEffect(() => {
+    console.log(userReceitas)
+  }, [userReceitas])
+
   const checkUser = () => {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
@@ -41,6 +47,10 @@ const UserReceitas = observer(props => {
       }
     })
   }
+
+  useEffect(() => {
+    console.log(receitaModal)
+  }, [receitaModal])
 
   const handleClickReceita = async id => {
     setReceitaModal(null)
@@ -54,10 +64,6 @@ const UserReceitas = observer(props => {
       console.log(err)
     }
   }
-
-  useEffect(() => {
-    console.log(receitaModal)
-  }, [receitaModal])
 
   const handleClick = () => {
     setIsEdit(false)
@@ -78,13 +84,13 @@ const UserReceitas = observer(props => {
   return (
     <div className="container">
       <div className="d-flex flex-wrap justify-content-center my-5">
-        {userReceitas
+        {userReceitas.length > 0
           ? userReceitas.map(receita => (
             <div key={receita._id} onClick={() => handleClickReceita(receita._id)} data-toggle="modal" data-target=".bd-example-modal-xl">
               <UserReceita receita={receita} />
             </div>
           ))
-          : null}
+          : placeholder.map(i => <UserReceita placeholder />)}
 
         <div id="modal-receita" className="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
           <div className="modal-dialog modal-lg">

@@ -29,12 +29,14 @@ const CriarReceita = observer(props => {
   const [titulo, setTitulo] = useState('');
   const [receita, setReceita] = useState({})
   const [uid, setUid] = useState()
+  const [imagem, setImagem] = useState()
+  const [url, setUrl] = useState()
 
   useEffect(() => {
     // console.log('receita para editar: ', props.receitaEditar._id)
     if (props.receitaEditar) {
       const { receitaEditar } = props
-      const { custo, dificuldade, nome, passos, tempo } = receitaEditar
+      const { custo, dificuldade, nome, passos, tempo, image } = receitaEditar
       //ingredientes
       receitaEditar.ingredientes.map(ing => uiStore.addIngredientes(ing))
       // categorias
@@ -45,6 +47,7 @@ const CriarReceita = observer(props => {
       setDificuldade(dificuldade)
       setPassos(passos)
       setTempo(tempo)
+      setUrl(image)
     } else {
       uiStore.clearFields()
     }
@@ -61,6 +64,7 @@ const CriarReceita = observer(props => {
     setPassos('')
     setTitulo('')
     setReceita('')
+    setImagem('')
 
     uiStore.clearFields()
   }
@@ -70,7 +74,6 @@ const CriarReceita = observer(props => {
 
   useEffect(() => {
     checkUser()
-    console.log()
   }, [])
 
   const checkUser = () => {
@@ -107,11 +110,74 @@ const CriarReceita = observer(props => {
 
     axios.post(`api/receitas/atualizar`, newReceita).
       then(res => {
-        props.closeModal()
-        limparCampos()
-        uiStore.changeConteudoAtual('Criar Receita')
-        uiStore.changeConteudoAtual('Suas Receitas')
+        if (res.status === 200) {
+          // redireciona para pagina de receitas criadas
+          let imgOutput = document.getElementById("img")
+          if (!imgOutput || res.data.url === "" || imgOutput.src === res.data.url) {
+            props.closeModal()
+            uiStore.changeConteudoAtual('Suas Receitas')
+            limparCampos()
+          }
+
+          else {
+            uploadImagem(res.data.id)
+          }
+        }
+
       })
+  }
+
+  const onHandleImagem = e => {
+    setImagem(e.target.files[0])
+
+  }
+
+  const uploadImagem = id => {
+
+    const CLOUDINARY_URL = `https://api.cloudinary.com/v1_1/dnpo8spfa/upload`
+    const CLOUDNARY_UPLOAD_PRESET = 'd1fmbyex'
+    const file = imagem
+    let formData = new FormData()
+    formData.append('file', file)
+    formData.append('upload_preset', CLOUDNARY_UPLOAD_PRESET)
+    axios({
+      url: CLOUDINARY_URL,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      data: formData
+    }).then(res => {
+      if (props.receitaEditar) {
+        console.log(res.data.url)
+
+        updateImagem(id, res.data.url)
+        props.closeModal()
+
+
+      }
+      console.log('imagem enviada com sucesso!')
+      console.log(res.data.url)
+      updateImagem(id, res.data.url)
+      limparCampos()
+
+    }).catch(err => console.log(err))
+  }
+
+  const updateImagem = (id, url) => {
+    try {
+      axios.post("/api/receitas/imagem", {
+        id,
+        url
+      }).then(
+        res => {
+          console.log(res)
+          uiStore.changeConteudoAtual('Suas Receitas')
+        }
+      ).catch(e => console.log(e))
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   const onHandleSubmit = async () => {
@@ -124,7 +190,7 @@ const CriarReceita = observer(props => {
       custo,
       dificuldade,
       passos,
-      uid,
+      uid
     };
     setReceita(newReceita)
 
@@ -137,10 +203,7 @@ const CriarReceita = observer(props => {
       .then(res => {
         if (res.status === 200) {
           // redireciona para pagina de receitas criadas
-          console.log('funcionou!')
-          limparCampos()
-          uiStore.changeConteudoAtual('Suas Receitas')
-
+          uploadImagem(res.data.id)
         }
       })
       .catch(err => console.log("erro", err));
@@ -156,6 +219,30 @@ const CriarReceita = observer(props => {
 
   }
 
+  useEffect(() => {
+    if (typeof imagem !== 'undefined') {
+      console.log('imagem mudou')
+      let reader = new FileReader()
+      let imgOutput = document.getElementById("img")
+      reader.onload = e => {
+        console.log(imgOutput)
+        imgOutput.src = e.target.result
+      }
+      if (typeof imagem === 'object' && typeof imagem !== null) {
+        reader.readAsDataURL(imagem);
+      }
+
+    }
+  }, [imagem])
+
+  useEffect(() => {
+    if (typeof url !== 'undefined') {
+      let imgOutput = document.getElementById("img")
+      console.log(imgOutput)
+      imgOutput.src = url
+    }
+  }, [url])
+
 
   return (
     <div className="container">
@@ -163,6 +250,22 @@ const CriarReceita = observer(props => {
       <div className="input-group mb-3">
         <input value={titulo} onChange={e => setTitulo(e.target.value)} type="text" className="form-control" aria-label="Text input with dropdown button" />
       </div>
+
+      <p className="nome-receita">Imagem</p>
+      <div className="input-group mp3">
+        <div class="upload-btn-wrapper">
+          <button class="btn-input-file">Escolha uma imagem</button>
+          <input type="file" onChange={(e) => onHandleImagem(e)} />
+        </div>
+
+      </div>
+
+      {
+        imagem || url ?
+          <img id="img" src="" alt="Sua imagem" max-width="200" /> :
+          <div className="placeholder-imagem"></div>
+      }
+
 
       {/* Categorias Principais */}
       <p className="categorias-principais">Categorias Principais <span className="obrigatorio">*</span></p>
@@ -187,10 +290,10 @@ const CriarReceita = observer(props => {
       <p className="label-ingredientes"> Clique para excluir</p>
       <div className="row my-2">
         <div className="col-5">
-          <input placeholder="farinha de trigo..." value={ing} onChange={e => setIng(e.target.value)} type="text" className="form-control" name="ing" id="" />
+          <input placeholder="100 gramas..." value={qtd} onChange={e => setQtd(e.target.value)} type="text" className="form-control" name="ing" id="" />
         </div>
         <div className="col-5">
-          <input placeholder="100 gramas..." value={qtd} onChange={e => setQtd(e.target.value)} type="text" className="form-control" name="qtd" id="" />
+          <input placeholder="farinha de trigo..." value={ing} onChange={e => setIng(e.target.value)} type="text" className="form-control" name="ing" id="" />
         </div>
         <div className="col-2">
           <button disabled={ing.length > 0 && qtd.length > 0 ? false : true} onClick={() => addIngredientes()} className="btn btn-default">Adicionar</button>
@@ -208,7 +311,7 @@ const CriarReceita = observer(props => {
       {/* passo a passo */}
       <p className="passo-a-passo">Passo a passo <span className="obrigatorio">*</span></p>
       <div className="input-group mb-3">
-        <textarea placeholder="explique o processo detalhadamente..." id="passosapasso" value={passos} onChange={e => setPassos(e.target.value)} type="text" className="form-control" aria-label="Text input with dropdown button" />
+        <textarea rows="10" placeholder="explique o processo detalhadamente..." id="passosapasso" value={passos} onChange={e => setPassos(e.target.value)} type="text" className="form-control" aria-label="Text input with dropdown button" />
       </div>
 
       {/* Tempo estimado - Custo - Dificuldade */}
@@ -224,9 +327,9 @@ const CriarReceita = observer(props => {
         <div className="col-4">
           <p className="tempo-custo-dificuldade">Dificuldade</p>
           <select value={dificuldade} onChange={e => setDificuldade(e.target.value)} className="form-control">
-            <option>Alta</option>
-            <option>Média</option>
             <option>Baixa</option>
+            <option>Média</option>
+            <option>Alta</option>
           </select>
         </div>
       </div>

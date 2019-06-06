@@ -15,7 +15,9 @@ const Categoria = observer(({ categoria }) => {
     return (
         uiStore.checkIfCatPaiIsActive(categoria) ?
             <div onClick={() => uiStore.changeCategoriaSecundaria(categoria)} className={"categoria-secundaria m-2" + (uiStore.checkIfAddCategoriaSecundaria(categoria.id) ? ' categoria-secundaria-active' : '')}>
-                <p className="px-2 py-auto">{categoria.nome}</p>
+                <div className="categoria-secundaria-filho">
+                    <p className="px-2 py-auto">{categoria.nome}</p>
+                </div>
             </div> :
             null
     )
