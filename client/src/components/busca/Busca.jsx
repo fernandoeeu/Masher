@@ -148,6 +148,10 @@ const Busca = () => {
     }
   }, [categoriaFiltro])
 
+  useEffect(() => {
+    console.log(receitaModal)
+  }, [receitaModal])
+
   return (
     <div className="container">
       <div className="d-flex flex-column">
@@ -194,13 +198,21 @@ const Busca = () => {
                   null
 
               }
-              <div className='flex-grid-receitas'>
-                {
-                  receitas.length > 0 ?
-                    receitas.map(receita => <div key={receita._id} onClick={() => handleClickReceita(receita._id)} data-toggle="modal" data-target=".bd-example-modal-xl"><UserReceita receita={receita} /></div>) :
-                    null
-                }
-              </div>
+
+              {
+                receitas.length || query.length > 0 ?
+                  receitas.length === 0 ?
+                    <div className="aviso-sem-receitas">
+                      <h5>Nenhuma receita encontrada, experimente remover algum ingrediente...</h5>
+                    </div> :
+                    <div className='flex-grid-receitas'>
+                      {receitas.map(receita => <div key={receita._id} onClick={() => handleClickReceita(receita._id)} data-toggle="modal" data-target=".bd-example-modal-xl"><UserReceita receita={receita} /></div>)}
+                    </div> :
+                  <div className="aviso-terao-receitas">
+                    <h5>Ar receitas pesquisadas aparecerão aqui.</h5>
+                  </div>
+              }
+
             </> :
             <h2>Loading</h2>
         }
@@ -238,9 +250,21 @@ const Busca = () => {
                         <h3 className="text-center">Detalhes</h3>
                         <div className="col-12 ing-table my-4">
                           <ul>
-                            <li>Demora em média {receitaModal.tempo} minutos</li>
-                            <li>Custa aproximadamente R$ {receitaModal.custo}</li>
-                            <li>Nível de dificuldade </li>
+                            {
+                              receitaModal.tempo ?
+                                <li>Demora em média {receitaModal.tempo} minutos</li> :
+                                null
+                            }
+                            {
+                              receitaModal.custo ?
+                                <li>Custa aproximadamente R$ {receitaModal.custo}</li> :
+                                null
+                            }
+                            {
+                              receitaModal.dificuldade ?
+                                <li>Nível de dificuldade {receitaModal.dificuldade}</li> :
+                                null
+                            }
                           </ul>
                         </div>
                       </div>
@@ -248,8 +272,10 @@ const Busca = () => {
                       <div className="col-12">
                         <h3 className="text-center">Passos</h3>
                         <div className="col-11 ing-table my-4 mx-auto">
-                          <h5 className="text-left p-2">
-                            {receitaModal.passos}
+                          <h5 className="text-left p-2 display-linebreak">
+                            {
+                              receitaModal.passos
+                            }
                           </h5>
                         </div>
                       </div>

@@ -79,7 +79,7 @@ const MainContentController = observer(() => {
       case "Perfil":
         return <Navbar opcoes={perfilOpcoes} />;
       default:
-        return <Navbar opcoes={inicioOpcoes} />;
+        return <Navbar opcoes={buscaOpcoes} />; // posteriormente substituir por InicioOpcoes
     }
   };
 

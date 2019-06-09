@@ -11,12 +11,12 @@ import MainContentController from "../controllers/MainContentController";
 const Sidebar = observer(({ location }) => {
   const uiStore = useContext(UiStoreContext);
   const opcoes = [
-    {
-      id: 0,
-      nome: "Início",
-      conteudo: "Em Destaque",
-      auth: false
-    },
+    // {
+    //   id: 0,
+    //   nome: "Início",
+    //   conteudo: "Em Destaque",
+    //   auth: false
+    // },
     {
       id: 1,
       nome: "Busca",

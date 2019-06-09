@@ -131,9 +131,21 @@ const UserReceitas = observer(props => {
                           <h3 className="text-center">Detalhes</h3>
                           <div className="col-12 ing-table my-4">
                             <ul>
-                              <li>Demora em média {receitaModal.tempo} minutos</li>
-                              <li>Custa aproximadamente R$ {receitaModal.custo}</li>
-                              <li>Nível de dificuldade </li>
+                              {
+                                receitaModal.tempo ?
+                                  <li>Demora em média {receitaModal.tempo} minutos</li> :
+                                  null
+                              }
+                              {
+                                receitaModal.custo ?
+                                  <li>Custa aproximadamente R$ {receitaModal.custo}</li> :
+                                  null
+                              }
+                              {
+                                receitaModal.dificuldade ?
+                                  <li>Nível de dificuldade {receitaModal.dificuldade}</li> :
+                                  null
+                              }
                             </ul>
                           </div>
                         </div>
@@ -141,7 +153,7 @@ const UserReceitas = observer(props => {
                         <div className="col-12">
                           <h3 className="text-center">Passos</h3>
                           <div className="col-11 ing-table my-4 mx-auto">
-                            <h5 className="text-left p-2">
+                            <h5 className="text-left p-2 display-linebreak">
                               {receitaModal.passos}
                             </h5>
                           </div>

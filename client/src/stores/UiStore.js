@@ -12,8 +12,8 @@ import { createContext } from "react";
 import { categoriasPrincipais } from '../components/categorias/categoriasData'
 
 class UiStore {
-  sideMenuActiveItem = "Início";
-  conteudoAtual = "Em Destaque";
+  sideMenuActiveItem = "Busca";
+  conteudoAtual = "Busca Inteligente";
   categoriaPrincipal = []
   // armazena as categorias secundarias com base nas categorias pai que estão ativas no momento
   categoriaSecundaria = []
