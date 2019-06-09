@@ -218,6 +218,11 @@ const Busca = () => {
                       <div className="col-12">
                         <h2 className="text-center font-weight-bold">{receitaModal.nome}</h2>
                       </div>
+                      <div className="col-12">
+                        <div className=" flex-div-img">
+                          <img src={receitaModal.image} className="img-modal" alt="imagem da receita" height="180" />
+                        </div>
+                      </div>
 
                       <div className="col-6">
                         <h3 className="text-center">Ingredientes</h3>
