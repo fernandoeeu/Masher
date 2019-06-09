@@ -19,7 +19,6 @@ const Inicio = () => {
     }
   };
   const changeComponent = name => {
-    console.log(name);
     this.setState({ actualComponent: name });
   };
 

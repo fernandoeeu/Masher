@@ -36,7 +36,7 @@ class Home extends Component {
     //   .auth()
     //   .currentUser.uid()
     //   .then(uid => console.log(uid));
-    firebase.auth().onAuthStateChanged(user => console.log(user));
+    firebase.auth().onAuthStateChanged(user => console.log(''));
     // firebase.auth().onAuthStateChanged(user => {
     //   if (user) {
     //     const me = {
@@ -84,7 +84,6 @@ class Home extends Component {
     try {
       const categorias = await axios.get("/api/categorias");
       this.setState({ categorias: categorias.data });
-      console.log(this.state.categorias);
     } catch (err) {
       console.log("Erro ao buscar categorias: " + err);
     }
@@ -101,7 +100,6 @@ class Home extends Component {
         this.setState({
           receitas: res.data
         });
-        console.log(this.state.receitas);
       })
       .catch(err => {
         console.log(err);

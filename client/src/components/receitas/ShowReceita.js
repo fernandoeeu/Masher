@@ -27,9 +27,9 @@ const ShowReceita = props => {
     }
     try {
       const res = await axios.post(`/api/receitas/atualizar/${receita.id}`, newReceita)
-      console.log(res)
+
     } catch (err) {
-      console.log(err)
+
     }
   }
 

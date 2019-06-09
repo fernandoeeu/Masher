@@ -13,7 +13,6 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
             return <Component {...props} />;
             // User is signed in
           } else {
-            console.log("usuário nao está logado");
 
             return (
               <Redirect

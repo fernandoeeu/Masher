@@ -9,7 +9,6 @@ const HasUser = ({ component: Component, ...rest }) => {
         if (!localStorage.getItem("user")) {
           return <Component {...props} />;
         } else {
-          console.log("nonono");
           return <Redirect to={{ pathname: "/home", from: props.location }} />;
         }
       }}

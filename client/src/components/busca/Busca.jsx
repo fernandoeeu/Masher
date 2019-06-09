@@ -30,10 +30,8 @@ const Busca = () => {
   }
 
   useEffect(() => {
-    console.log(document.body.clientHeight);
-    console.log(document.body.clientWidth);
-
-    console.log(categoriaFiltro)
+    // console.log(document.body.clientHeight);
+    // console.log(document.body.clientWidth);
     let receitasOld = receitas
     let categoriasAux = []
     if (receitas.length > 0) {
@@ -45,7 +43,6 @@ const Busca = () => {
         })
         setCategorias(categoriasAux)
       })
-      console.log('categorias: ', categorias)
     } else {
       setReceitas(receitasOld)
     }
@@ -133,7 +130,6 @@ const Busca = () => {
 
   useEffect(() => {
     let receitasAux = []
-    console.log(categoriaFiltro)
     if (categoriaFiltro.length > 0) {
       receitas.map(receita => {
         receita.categoriasPrincipais.map(cp => {
@@ -147,10 +143,6 @@ const Busca = () => {
       setReceitas(receitasPrime)
     }
   }, [categoriaFiltro])
-
-  useEffect(() => {
-    console.log(receitaModal)
-  }, [receitaModal])
 
   return (
     <div className="container">

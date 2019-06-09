@@ -149,15 +149,12 @@ const CriarReceita = observer(props => {
       data: formData
     }).then(res => {
       if (props.receitaEditar) {
-        console.log(res.data.url)
 
         updateImagem(id, res.data.url)
         props.closeModal()
 
 
       }
-      console.log('imagem enviada com sucesso!')
-      console.log(res.data.url)
       updateImagem(id, res.data.url)
       limparCampos()
 
@@ -171,7 +168,6 @@ const CriarReceita = observer(props => {
         url
       }).then(
         res => {
-          console.log(res)
           uiStore.changeConteudoAtual('Suas Receitas')
         }
       ).catch(e => console.log(e))
@@ -236,11 +232,9 @@ const CriarReceita = observer(props => {
 
   useEffect(() => {
     if (typeof imagem !== 'undefined') {
-      console.log('imagem mudou')
       let reader = new FileReader()
       let imgOutput = document.getElementById("img")
       reader.onload = e => {
-        console.log(imgOutput)
         imgOutput.src = e.target.result
       }
       if (typeof imagem === 'object' && typeof imagem !== null) {
@@ -253,7 +247,6 @@ const CriarReceita = observer(props => {
   useEffect(() => {
     if (typeof url !== 'undefined') {
       let imgOutput = document.getElementById("img")
-      console.log(imgOutput)
       imgOutput.src = url
     }
   }, [url])

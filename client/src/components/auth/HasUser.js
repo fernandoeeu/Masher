@@ -17,7 +17,6 @@ const HasUser = ({ component: Component, ...rest }) => {
         if (firebase.auth().onAuthStateChanged) {
           return <Component {...props} />;
         } else {
-          console.log("nonono");
           return <Redirect to={{ pathname: "/", from: props.location }} />;
         }
 

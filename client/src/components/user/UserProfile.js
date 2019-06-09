@@ -40,7 +40,6 @@ class UserProfile extends Component {
     const switchComponents = () => {
       switch (this.state.actualComponent) {
         case "Minhas Receitas":
-          console.log(this.state.actualComponent);
           return <UserReceitas />;
         case "Lixeira":
           return <Lixeira />;

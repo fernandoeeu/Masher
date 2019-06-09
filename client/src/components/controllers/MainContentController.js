@@ -63,11 +63,6 @@ const MainContentController = observer(() => {
     }
   ];
 
-  const changeContent = nome => {
-    console.log(nome);
-    setContent(nome);
-  };
-
   const switchNavbar = () => {
     switch (compAtual) {
       case "Início":

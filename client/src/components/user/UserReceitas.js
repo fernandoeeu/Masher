@@ -48,14 +48,9 @@ const UserReceitas = observer(props => {
     })
   }
 
-  useEffect(() => {
-    console.log(receitaModal)
-  }, [receitaModal])
-
   const handleClickReceita = async id => {
     uiStore.clearFields()
     setReceitaModal(null)
-    console.log(id)
     try {
       const receita = await axios.get(`/api/receitas/busca/${id}`)
       if (receita) {
@@ -85,13 +80,17 @@ const UserReceitas = observer(props => {
   return (
     <div className="container">
       <div className="d-flex flex-wrap justify-content-center my-5">
-        {userReceitas.length > 0
-          ? userReceitas.map(receita => (
-            <div key={receita._id} onClick={() => handleClickReceita(receita._id)} data-toggle="modal" data-target=".bd-example-modal-xl">
-              <UserReceita receita={receita} />
-            </div>
-          ))
-          : placeholder.map(i => <UserReceita placeholder />)}
+        {userReceitas ?
+
+          userReceitas.length > 0
+            ? userReceitas.map(receita => (
+              <div key={receita._id} onClick={() => handleClickReceita(receita._id)} data-toggle="modal" data-target=".bd-example-modal-xl">
+                <UserReceita receita={receita} />
+              </div>
+            ))
+            : placeholder.map(i => <UserReceita placeholder />)
+          :
+          <h3>Suas receitas aparecerão aqui quando forem criadas</h3>}
 
         <div id="modal-receita" className="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
           <div className="modal-dialog modal-lg">
