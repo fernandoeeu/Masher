@@ -36,10 +36,6 @@ const MainContentController = observer(() => {
     {
       id: 0,
       nome: "Busca Inteligente"
-    },
-    {
-      id: 1,
-      nome: "busca 02"
     }
   ];
   const dashboardOpcoes = [

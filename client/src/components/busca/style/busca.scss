@@ -1,3 +1,35 @@
 .receita-modal {
     min-width: 200vh;
 }
+
+.flex-grid-receitas {
+    display: grid;
+    grid: 100px / 1fr 1fr 1fr;
+}
+
+.flex-grid-filtro {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.filtro {
+    font-size: 26px;
+    padding: 5px 10px;
+    transition: 0.3s;
+    cursor: pointer;
+}
+.filtro-active {
+    transition: 0.3s;
+    color: #CE1F34;
+    font-weight: bold;
+}
+.flex-grid-quantidade-receitas {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.flex-grid-quantidade-receitas > p {
+    color: #CE1F34;
+    font-size: 22px;
+    font-weight: 600;
+}

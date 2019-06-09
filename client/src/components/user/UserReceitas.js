@@ -36,9 +36,9 @@ const UserReceitas = observer(props => {
 
   }, []);
 
-  useEffect(() => {
-    console.log(userReceitas)
-  }, [userReceitas])
+  // useEffect(() => {
+  //   console.log(userReceitas)
+  // }, [userReceitas])
 
   const checkUser = () => {
     firebase.auth().onAuthStateChanged(user => {
@@ -53,6 +53,7 @@ const UserReceitas = observer(props => {
   }, [receitaModal])
 
   const handleClickReceita = async id => {
+    uiStore.clearFields()
     setReceitaModal(null)
     console.log(id)
     try {
@@ -97,9 +98,9 @@ const UserReceitas = observer(props => {
             <div className="modal-content">
               <div className="container-fluid">
                 <div className="row my-2">
-                  <div className="btn-group btn-group-toggle mx-auto" data-toggle="buttons">
-                    <div onClick={() => handleClick()} className="btn btn-primary">Visualizar</div>
-                    <div onClick={() => setIsEdit(true)} className="btn btn-primary">Editar</div>
+                  <div className="btn-group mx-auto" role="group">
+                    <button onClick={() => handleClick()} type="button" className="btn btn-primary">Visualizar</button>
+                    <button onClick={() => setIsEdit(true)} type="button" className="btn btn-primary">Editar</button>
                   </div>
                 </div> {/* fim row switch edicao */}
 
@@ -109,6 +110,11 @@ const UserReceitas = observer(props => {
                       <div className="row my-2">
                         <div className="col-12">
                           <h2 className="text-center font-weight-bold">{receitaModal.nome}</h2>
+                        </div>
+                        <div className="col-12">
+                          <div className=" flex-div-img">
+                            <img src={receitaModal.image} className="img-modal" alt="imagem da receita" height="180" />
+                          </div>
                         </div>
 
                         <div className="col-6">
@@ -140,7 +146,7 @@ const UserReceitas = observer(props => {
                             </h5>
                           </div>
                         </div>
-                      </div> : null
+                      </div> : <h2 className='mx-auto'>Sua receita aparecerá em instantes</h2>
                     :
                     receitaModal ?
                       <div className="row my-2">

@@ -192,23 +192,38 @@ const CriarReceita = observer(props => {
       passos,
       uid
     };
-    setReceita(newReceita)
+    if (validateFields(custo, tempo)) {
+      setReceita(newReceita)
 
-    axios
-      .post("/api/receitas/criar", newReceita, {
-        // headers: {
-        //   "x-auth-token": this.state.userToken
-        // }
-      })
-      .then(res => {
-        if (res.status === 200) {
-          // redireciona para pagina de receitas criadas
-          uploadImagem(res.data.id)
-        }
-      })
-      .catch(err => console.log("erro", err));
+      axios
+        .post("/api/receitas/criar", newReceita, {
+          // headers: {
+          //   "x-auth-token": this.state.userToken
+          // }
+        })
+        .then(res => {
+          if (res.status === 200) {
+            // redireciona para pagina de receitas criadas
+            uploadImagem(res.data.id)
+          }
+        })
+        .catch(err => console.log("erro", err));
+    } else {
+      alert('Custo e tempo estimado são campos apenas numéricos!')
+    }
+
 
   };
+
+  const validateFields = (custo, tempo) => {
+    // const numberRegex = /^[0-9]*$/g;
+    // const custoResult = numberRegex.exec(custo)
+    // const tempoResult = numberRegex.exec(tempo)
+    // if (custoResult === null || tempoResult === null) {
+    //   return false
+    // }
+    return true
+  }
 
   const checkFields = () => {
     if (uiStore.ingredientes.length > 0 && passos.length > 0 && titulo.length > 0 && uiStore.categoriaPrincipal.length > 0 && uiStore.categoriaSecundaria.length > 0) {

@@ -3,6 +3,7 @@ import { Redirect, NavLink } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import { UiStoreContext } from "../../stores/UiStore.js";
 import firebase from 'firebase'
+import $ from 'jquery'
 
 import "./style/main.scss";
 import MainContentController from "../controllers/MainContentController";
@@ -51,11 +52,12 @@ const Sidebar = observer(({ location }) => {
     localStorage.clear()
     uiStore.changeConteudoAtual('Em Destaque');
     uiStore.changeSideMenuActiveItem('Início');
+    window.location.reload();
   }
 
   return (
     <>
-      <div className="d-flex flex-row">
+      <div className="d-flex flex-row background-default">
         <div className="col-3 main-div" style={{}}>
           <div className="d-flex flex-column p-1 sidebar-wrapper">
             <div className="row py-3 px-4">
@@ -94,9 +96,9 @@ const Sidebar = observer(({ location }) => {
               ))}
               {
                 document.cookie ?
-                  <NavLink to="/home" onClick={() => sair()} className="sidebar-item pl-4 remove-navlink">
+                  <div class="sidebar-item pl-4 remove-navLink" data-toggle="modal" data-target="#modalSair">
                     Sair
-                  </NavLink> :
+                  </div> :
                   <NavLink to="/signin" className="sidebar-item pl-4 remove-navlink">
                     Entrar
                   </NavLink>
@@ -106,6 +108,31 @@ const Sidebar = observer(({ location }) => {
           </div>
         </div>
         <div className="col-9 conteudo"><MainContentController /></div>
+
+        {/* modal */}
+        <div className="modal" id="modalSair" tabindex="-1" role="dialog">
+          <div className="modal-dialog" role="document">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">Nunca é um adeus</h5>
+                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div className="modal-body">
+                <p>Você está prestes a deslogar de nosso incrível site...</p>
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn" data-dismiss="modal">Voltar</button>
+
+                <NavLink to="/home" className="btn-inside-modal btn" data-dismiss="modal" onClick={() => sair()}>
+                  Sair
+                </NavLink>
+
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </>
   );

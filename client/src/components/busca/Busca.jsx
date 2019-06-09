@@ -16,18 +16,43 @@ const Busca = () => {
   const [open, setOpen] = useState(false);
   const [receitaModal, setReceitaModal] = useState(null);
   const [ingModal, setIngModal] = useState();
-  let aux = []
+  const [isLoading, setIsLoading] = useState(false);
+  const [categoriaFiltro, setCategoriaFiltro] = useState('')
+  const [categorias, setCategorias] = useState([])
+  const [receitasPrime, setReceitasPrime] = useState([])
+
   const removeItemQuery = item => {
+    setCategorias([])
     let aux = query.filter(i => i !== item)
     setQuery(aux)
     fetchReceitas(aux)
+    setIsLoading(false)
   }
 
   useEffect(() => {
-    setCounter(receitas.length)
+    console.log(document.body.clientHeight);
+    console.log(document.body.clientWidth);
+
+    console.log(categoriaFiltro)
+    let receitasOld = receitas
+    let categoriasAux = []
+    if (receitas.length > 0) {
+      receitas.map(receita => {
+        receita.categoriasPrincipais.map(cp => {
+          if (!categoriasAux.includes(cp.nome)) {
+            categoriasAux.push(cp.nome)
+          }
+        })
+        setCategorias(categoriasAux)
+      })
+      console.log('categorias: ', categorias)
+    } else {
+      setReceitas(receitasOld)
+    }
   }, [receitas])
 
   const fetchReceitas = query => {
+    setIsLoading(true)
     setAtual('')
     console.log(query)
     if (query.length > 0) {
@@ -35,13 +60,22 @@ const Busca = () => {
         .post("/api/receitas", query)
         .then(res => {
           if (res.status === 200) {
+            setIsLoading(false)
             // armazenando as receitas no estado local
-            res.data.length > 0 ? setReceitas(res.data) : setReceitas([])
+            if (res.data.length > 0) {
+              setReceitas(res.data)
+              setReceitasPrime(res.data)
+
+            } else {
+              setReceitas([])
+              setReceitasPrime([])
+            }
           }
         })
         .catch(err => console.log("erro", err));
     } else {
       setReceitas([])
+      setReceitasPrime([])
     }
   }
 
@@ -51,7 +85,6 @@ const Busca = () => {
       if (receita) {
         setOpen(true)
         setReceitaModal(receita.data)
-        fetchReceitas(query)
       }
     } catch (err) {
       console.log(err)
@@ -63,18 +96,19 @@ const Busca = () => {
     // aux = [...query, ...aux, atual]
     // let x
     setQuery([...query, atual])
-
     fetchReceitas(query)
   }
   useEffect(() => {
     if (query.length > 0) {
       fetchReceitas(query)
     }
+
   }, [query])
 
   const handleClickLimpar = () => {
     setQuery('')
     setReceitas([])
+    setIsLoading(false)
   }
 
   const closeModal = () => {
@@ -83,6 +117,36 @@ const Busca = () => {
   const btnStyle = {
     display: 'none'
   }
+  // adicionar ingredientes ao pressionar enter
+  const handleKeyDown = e => {
+    if (e.key === 'enter') {
+      alert('oi')
+    }
+  }
+
+  // setando o filtro por categorias
+  const handleFiltro = categoria => {
+    categoriaFiltro === categoria ?
+      setCategoriaFiltro('') :
+      setCategoriaFiltro(categoria)
+  }
+
+  useEffect(() => {
+    let receitasAux = []
+    console.log(categoriaFiltro)
+    if (categoriaFiltro.length > 0) {
+      receitas.map(receita => {
+        receita.categoriasPrincipais.map(cp => {
+          if (cp.nome === categoriaFiltro) {
+            receitasAux.push(receita)
+          }
+        })
+      })
+      setReceitas(receitasAux)
+    } else {
+      setReceitas(receitasPrime)
+    }
+  }, [categoriaFiltro])
 
   return (
     <div className="container">
@@ -100,7 +164,7 @@ const Busca = () => {
                 </button>
               </div>
               <div className="col-2">
-                <button disabled={atual.length > 0 ? false : true} className="btn btn-success" onClick={() => handleClickQuery()}>
+                <button type="submit" id="adicionar" disabled={atual.length > 0 ? false : true} className="btn btn-success" onClick={() => handleClickQuery()}>
                   Adicionar
                 </button>
               </div>
@@ -113,14 +177,33 @@ const Busca = () => {
             query.length > 0 ? query.map((item, i) => <div key={i} onClick={() => removeItemQuery(item)}> <IngredienteBusca nome={item} /></div>) : null
           }
         </div>
-        <h4>Foram encontradas {counter} receitas!</h4>
-        <div className='d-flex'>
-          {
-            receitas.length > 0 ?
-              receitas.map(receita => <div key={receita._id} onClick={() => handleClickReceita(receita._id)} data-toggle="modal" data-target=".bd-example-modal-xl"><UserReceita receita={receita} /></div>) :
-              null
-          }
-        </div>
+        {
+          !isLoading ?
+            <>
+              {
+                categorias.length > 0 ?
+                  <>
+                    <div className="flex-grid-quantidade-receitas"><p>{receitas.length} receitas encontradas</p></div>
+                    <div className="flex-grid-filtro">
+                      {categorias.map(categoria => {
+                        return <div onClick={() => handleFiltro(categoria)} key={categoria}
+                          className={
+                            "filtro" + (categoriaFiltro === categoria ? " filtro-active" : "")}>{categoria}</div>
+                      })}
+                    </div></> :
+                  null
+
+              }
+              <div className='flex-grid-receitas'>
+                {
+                  receitas.length > 0 ?
+                    receitas.map(receita => <div key={receita._id} onClick={() => handleClickReceita(receita._id)} data-toggle="modal" data-target=".bd-example-modal-xl"><UserReceita receita={receita} /></div>) :
+                    null
+                }
+              </div>
+            </> :
+            <h2>Loading</h2>
+        }
 
         {/* modal */}
         <div id="modal-receita" className="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">

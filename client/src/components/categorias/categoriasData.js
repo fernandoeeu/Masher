@@ -21,6 +21,10 @@ export const categoriasPrincipais = [
     },
     {
         id: 5,
+        nome: 'Sobremesas'
+    },
+    {
+        id: 6,
         nome: 'Especiais',
     },
 ]
@@ -108,8 +112,8 @@ export const categoriasSecundarias = [
     },
     {
         id: 16,
-        nome: 'Bolos e Tortas',
-        pai: 3,
+        nome: 'Bolos',
+        pai: 5,
     },
     {
         id: 17,
@@ -154,26 +158,36 @@ export const categoriasSecundarias = [
     {
         id: 25,
         nome: 'Páscoa',
-        pai: 5,
+        pai: 6,
     },
     {
         id: 26,
         nome: 'Aniversários',
-        pai: 5,
+        pai: 6,
     },
     {
         id: 27,
         nome: 'Festa Junina',
-        pai: 5,
+        pai: 6,
     },
     {
         id: 28,
         nome: 'Natal e Ano Novo',
-        pai: 5,
+        pai: 6,
     },
     {
         id: 29,
         nome: 'Confeitaria',
-        pai: 5,
+        pai: 6,
     },
+    {
+        id: 30,
+        nome: 'Tortas',
+        pai: 5
+    },
+    {
+        id: 31,
+        nome: 'Mousses',
+        pai: 5
+    }
 ]

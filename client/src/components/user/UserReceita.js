@@ -5,7 +5,6 @@ import './style/userReceita.scss'
 const UserReceita = props => {
   let nome;
   if (props.receita) {
-    console.log(props)
     const { receita } = props
 
     nome = receita.nome
