@@ -36,9 +36,9 @@ const UserReceitas = observer(props => {
 
   }, []);
 
-  // useEffect(() => {
-  //   console.log(userReceitas)
-  // }, [userReceitas])
+  useEffect(() => {
+    console.log(userReceitas)
+  }, [userReceitas])
 
   const checkUser = () => {
     firebase.auth().onAuthStateChanged(user => {
@@ -80,7 +80,7 @@ const UserReceitas = observer(props => {
   return (
     <div className="container">
       <div className="d-flex flex-wrap justify-content-center my-5">
-        {userReceitas ?
+        {!userReceitas.length === 0 ?
 
           userReceitas.length > 0
             ? userReceitas.map(receita => (

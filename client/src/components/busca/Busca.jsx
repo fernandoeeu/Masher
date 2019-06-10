@@ -201,7 +201,7 @@ const Busca = () => {
                       {receitas.map(receita => <div key={receita._id} onClick={() => handleClickReceita(receita._id)} data-toggle="modal" data-target=".bd-example-modal-xl"><UserReceita receita={receita} /></div>)}
                     </div> :
                   <div className="aviso-terao-receitas">
-                    <h5>Ar receitas pesquisadas aparecerão aqui.</h5>
+                    <h5>As receitas pesquisadas aparecerão aqui.</h5>
                   </div>
               }
 
