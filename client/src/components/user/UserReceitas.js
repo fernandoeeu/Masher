@@ -20,24 +20,26 @@ const UserReceitas = observer(props => {
   const [open, setOpen] = useState(false);
   const [receitaModal, setReceitaModal] = useState(null);
   const [isEdit, setIsEdit] = useState(false)
+  const [vazio, setVazio] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   const fetchUserReceitas = uid => {
+    setIsLoading(true)
     axios
       .post(`/api/receitas/busca/${uid}`)
       .then(res => {
         setUserReceitas(res.data);
+        setIsLoading(false)
       })
       .catch(err => console.log("Erro", err.response));
   };
 
   useEffect(() => {
     checkUser()
-
-
   }, []);
 
   useEffect(() => {
-    console.log(userReceitas)
+    userReceitas.length !== 0 ? setVazio(true) : setVazio(false)
   }, [userReceitas])
 
   const checkUser = () => {
@@ -80,17 +82,18 @@ const UserReceitas = observer(props => {
   return (
     <div className="container">
       <div className="d-flex flex-wrap justify-content-center my-5">
-        {!userReceitas.length === 0 ?
+        {
 
-          userReceitas.length > 0
-            ? userReceitas.map(receita => (
+          !isLoading ? userReceitas.length > 0 ?
+            userReceitas.map(receita => (
               <div key={receita._id} onClick={() => handleClickReceita(receita._id)} data-toggle="modal" data-target=".bd-example-modal-xl">
                 <UserReceita receita={receita} />
               </div>
-            ))
+            )) : <h3>Parece que você ainda não criou nenhuma receita...</h3>
             : placeholder.map(i => <UserReceita placeholder />)
-          :
-          <h3>Suas receitas aparecerão aqui quando forem criadas</h3>}
+
+
+        }
 
         <div id="modal-receita" className="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
           <div className="modal-dialog modal-lg">
