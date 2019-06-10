@@ -115,11 +115,11 @@ export const categoriasSecundarias = [
         nome: 'Bolos',
         pai: 5,
     },
-    {
-        id: 17,
-        nome: 'Doces e Sobremesas',
-        pai: 3,
-    },
+    // {
+    //     id: 17,
+    //     nome: 'Doces e Sobremesas',
+    //     pai: 3,
+    // },
     {
         id: 18,
         nome: 'Salgados',
