@@ -13,8 +13,8 @@ const Landing = props => {
           <NavLink to="/signin" className="btn btn-primary mr-2">
             Entrar
           </NavLink>
-          <NavLink to="/signup" className="btn btn-secondary">
-            Cadastrar
+          <NavLink to="/home" className="btn btn-secondary">
+            Convidado
           </NavLink>
         </div>
       </div>
